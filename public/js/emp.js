@@ -156,7 +156,6 @@ function processJsonError(resp) {
 }
 
 function Event(data) {
-  this.organizationId = ko.observable(data.organizationId);
   this.projectId      = ko.observable(data.projectId);
   this.projectName    = ko.observable(data.projectName);
   this.userId         = ko.observable(data.userId);
@@ -372,7 +371,6 @@ function User(data) {
   this.realNameI18N = ko.observable(data.realNameI18N);
   this.email = ko.observable(data.email);
   this.timezone = ko.observable(data.timezone);
-  this.organization = ko.observable(data.organization);
   this.location = ko.observable(data.location);
   this.title = ko.observable(data.title);
   this.url = ko.observable(data.url);
@@ -748,7 +746,7 @@ function ProjectViewModel(project) {
 
   self.page       = ko.observable("1");
   self.project    = ko.observable(new Project(project));
-  self.events     = ko.observable({ total: 0 });
+  self.events     = ko.observable({ total: ko.observable(0) });
   self.milestones = ko.observableArray([]);
   self.eventURL   = ko.computed(function() {
 

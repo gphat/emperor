@@ -17,7 +17,7 @@ object ApplicationBuild extends Build {
     "javax.mail"    % "mail"                    % "1.4.1",
     "org.apache.commons" % "commons-email"      % "1.2",
     "joda-time"     % "joda-time"               % "2.3",
-    "wabisabi"      %% "wabisabi"               % "2.0.7",
+    "wabisabi"      %% "wabisabi"               % "2.0.8",
     "org.pegdown"   % "pegdown"                 % "1.4.1"
   )
 

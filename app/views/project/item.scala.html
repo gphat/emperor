@@ -31,8 +31,8 @@
  </div>
  <div class="span6">
   <h2>@Messages("general.timeline")</h2>
-  <div class="alert alert-info" data-bind="display: events().total > 0">@Messages("general.timeline.empty")</div>
-  <div data-bind="if: events().total > 0">
+  <div data-bind="if: events().total < 1"><div class="alert alert-info">@Messages("general.timeline.empty")</div></div>
+  <div data-bind="if: events().total() > 0">
    <ul class="media-list" data-bind="foreach: events().items">
     <li class="media">
      <a class="pull-left" data-bind="attr: { href: '/user/' + userId() }"><img class="media-object" data-bind="attr: { src: 'https://secure.gravatar.com/avatar/' + userEmailDigest() + '?s=32' }"></a>
