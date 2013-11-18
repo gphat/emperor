@@ -1,0 +1,37 @@
+@**
+ * Generate a pager control for a given [emp.util.Pagination.Page].
+ *@
+@(page: emp.util.Pagination.Page[Any])(implicit request: Request[AnyContent])
+
+@import emp.util.Links
+
+@if(page.items.isEmpty) {
+@Messages("pager.empty")
+} else {
+<span class="summ">@Messages("pager.summary", page.offset + 1, page.offset + page.items.size, page.total)</span>
+<div class="pagination pull-right">
+  <ul>
+    @if(page.getWindow(10).head > page.range.start) {
+    <li><a href="@Links.pagerLink(params = request.queryString, path = request.path, page = page.range.start, count = page.count)">&laquo;</a></li>
+    }
+    @page.prev.map { prev =>
+    <li><a href="@Links.pagerLink(params = request.queryString, path = request.path, page = page.prev.get, count = page.count)">&larr; @Messages("pager.prev")</a></li>
+    }.getOrElse {
+    <li class="disabled"><a href="#">&larr; @Messages("pager.prev")</a></li>
+    }
+    @page.getWindow(10).map { pageNum =>
+    <li @if(pageNum == page.page) { class="active" }>
+      <a href="@Links.pagerLink(params = request.queryString, path = request.path, page = pageNum, count = page.count)">@{ pageNum }</a>
+    </li>
+    }
+    @page.next.map { next =>
+    <li><a href="@Links.pagerLink(params = request.queryString, path = request.path, page = page.next.get, count = page.count)">@Messages("pager.next") &rarr;</a></li>
+    }.getOrElse {
+    <li class="disabled"><a href="#">@Messages("pager.next") &rarr;</a></li>
+    }
+    @if(page.getWindow(10).last + 1 < page.range.end) {
+    <li><a href="@Links.pagerLink(params = request.queryString, path = request.path, page = page.range.end - 1, count = page.count)">&raquo;</a></li>
+    }
+  </ul>
+</div>
+}

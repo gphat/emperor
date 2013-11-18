@@ -1,0 +1,24 @@
+@(id: String, objForm: Form[(TicketData)], users: List[(String,String)], assignees: List[(String,String)], attentions: List[(String,String)], projs: List[(String,String)], ttypes: List[(String,String)], priorities: List[(String,String)], severities: List[(String,String)])(implicit request: AuthenticatedRequest)
+
+@import helper._
+@import helper.bootstrap.bootstrapField
+
+@main(Messages("ticket.edit")) {
+<h1>@Messages("ticket.edit")</h1>
+@helper.form(action = routes.Ticket.update(id)) {
+ <fieldset>
+  @helper.inputText(field = objForm("summary"), args = 'class -> "span8", '_label -> Messages("ticket.summary"))
+  @helper.textarea(field = objForm("description"), args = 'class -> "span8", 'rows -> 5, '_label -> Messages("ticket.description"))
+  @helper.select(field = objForm("userId"), options = users, args = '_label -> Messages("ticket.reporter"))
+  @helper.select(field = objForm("assigneeId"), options = assignees, args = '_label -> Messages("ticket.assignee"))
+  @helper.select(field = objForm("attentionId"), options = attentions, args = '_label -> Messages("ticket.attention"))
+  @helper.select(field = objForm("typeId"), options = ttypes, args = 'class -> "foo", '_label -> Messages("ticket.type"))
+  @helper.select(field = objForm("priorityId"), options = priorities, args = 'class -> "foo", '_label -> Messages("ticket.priority"))
+  @helper.select(field = objForm("severityId"), options = severities, args = 'class -> "foo", '_label -> Messages("ticket.severity"))
+  <div class="form-actions">
+   <a href="@controllers.routes.Ticket.item("comments", id)" class="btn"><i class="icon-remove"></i> @Messages("form.cancel")</a>
+   <button type="submit" class="btn btn-primary"><i class="icon-check"></i> @Messages("form.submit")</button>
+  </div>
+ </fieldset>
+}
+}

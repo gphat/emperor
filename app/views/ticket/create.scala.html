@@ -1,0 +1,47 @@
+@(objForm: Form[(models.NewTicket)],
+  users: String,
+  projs: String,
+  ttypes: String,
+  priorities: String,
+  severities: String,
+  project: String
+)(implicit request: AuthenticatedRequest)
+
+@import emp.JsonFormats._
+@import helper._
+@import helper.bootstrap.bootstrapField
+@import play.api.libs.json.Json
+
+@main(Messages("ticket.add")) {
+<h1>@Messages("ticket.add")</h1>
+<div data-bind="visible: projects().length == 0" class="alert alert-info">@Messages("general.projects.empty")</a> <a href="@controllers.routes.Project.create">@Messages("general.projects.add")</a></div>
+@helper.bootstrap.form(action = controllers.routes.Ticket.create(), dataBind = "submit: doSubmit", args = 'class -> "form-horizontal", 'id -> "add-ticket") {
+ <fieldset data-bind="visible: projects().length > 0">
+  @helper.bootstrap.select(field = objForm("projectId"), dataBind = "options: projects(), optionsCaption: '" + Messages("ticket.project.caption") + "', optionsText: 'name', optionsValue: 'id', value: chosenProject", args = '_label -> Messages("ticket.project"))
+  @helper.bootstrap.inputText(field = objForm("summary"), dataBind = "value: summary", args = 'class -> "span8", '_label -> Messages("ticket.summary"))
+  @helper.bootstrap.textarea(field = objForm("description"), dataBind="value: description", args = 'class -> "span8", 'rows -> 5, '_label -> Messages("ticket.description"))
+  @helper.bootstrap.select(field = objForm("reporterId"), dataBind = "options: reporters(), value: chosenReporter, optionsText: 'realName', optionsValue: 'id'", args = '_label -> Messages("ticket.reporter"))
+  @helper.bootstrap.select(field = objForm("assigneeId"), dataBind = "options: assignees(), value: chosenAssignee, optionsText: 'realName', optionsValue: 'id'", args = '_label -> Messages("ticket.assignee"))
+  @helper.bootstrap.select(field = objForm("typeId"), dataBind = "options: ttypes(), value: chosenType, optionsText: 'nameI18N', optionsValue: 'id'", args = '_label -> Messages("ticket.type"))
+  @helper.bootstrap.select(field = objForm("priorityId"), dataBind = "options: priorities(), value: chosenPriority, optionsText: 'nameI18N', optionsValue: 'id'", args = '_label -> Messages("ticket.priority"))
+  @helper.bootstrap.select(field = objForm("severityId"), dataBind = "options: severities(), value: chosenSeverity, optionsText: 'nameI18N', optionsValue: 'id'", args = '_label -> Messages("ticket.severity"))
+  <div class="form-actions">
+   <button type="submit" data-bind="enable: hasProject()" class="btn btn-primary"><i class="icon-check"></i> @Messages("form.submit")</button>
+  </div>
+ </fieldset>
+}
+<script>
+$(function(){
+  var view = TicketAddViewModel(
+    @Html(Json.toJson(request.user).toString),
+    @Html(projs),
+    @Html(project),
+    @Html(users),
+    @Html(ttypes),
+    @Html(priorities),
+    @Html(severities)
+  );
+  ko.applyBindings(view);
+});
+</script>
+}

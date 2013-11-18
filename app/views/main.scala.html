@@ -1,0 +1,117 @@
+@**
+ * Main template for use by all of Emperor's pages.
+ *@
+@(title: String, currentProject: Option[Long] = None)(content: Html)(implicit request: AuthenticatedRequest)
+
+@import play.api.Play.current
+@import play.api.Play
+@import views.html.util._
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Emperor: @title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-modal.css")">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
+    <script src="@routes.Assets.at("js/URI.js")"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    @if(Play.isProd) {
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-34502059-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    }
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="@routes.Core.index()">Emperor</a>
+          @topmenu(currentProject = currentProject)(request)
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+     <div id="alert-area">
+      @{ request.flash.get("success") match {
+        case Some(message) => {
+          <div class="alert alert-success">
+           <a class="close" data-dismiss="alert" href="#">&times;</a>
+           { Messages(message) }
+          </div>
+        }
+        case None => { }
+      }
+      }
+      @{ request.flash.get("error") match {
+        case Some(message) => {
+          <div class="alert alert-error">
+           <a class="close" data-dismiss="alert" href="#">&times;</a>
+           { Messages(message) }
+          </div>
+        }
+        case None => { }
+      }
+      }
+      @{ request.flash.get("info") match {
+        case Some(message) => {
+          <div class="alert alert-info">
+           <a class="close" data-dismiss="alert" href="#">&times;</a>
+           { Messages(message) }
+          </div>
+        }
+        case None => { }
+      }
+      }
+     </div>
+     @content
+    </div>
+
+   <footer>
+    @Html(Messages("app.footer.blurb", emp.BuildInfo.version))
+    <div class="pull-right">
+    <a href="http://emperorapp.com/docs" target="_blank">@Messages("general.documentation")</a>
+    <i class="icon-ellipsis-vertical"></i>
+    <!-- A link to launch the Classic Widget -->
+    <a href="javascript:void(0)" data-uv-lightbox="classic_widget" data-uv-mode="full" data-uv-primary-color="#1abc9c" data-uv-link-color="#34495e" data-uv-default-mode="feedback" data-uv-forum-id="212933">@Html(Messages("general.support"))</a>
+    </div>
+   </footer>
+   <script src="@routes.Assets.at("js/emp.js")"></script>
+   <!-- XXX This should go -->
+   <script id="alerter" type="text/x-handlebars-template">
+    <div class="alert {{alert_class}}">
+     <a class="close" data-dismiss="alert" href="#">&times;</a>
+     {{message}}
+    </div>
+   </script>
+   <!-- UserVoice JavaScript SDK (only needed once on a page) -->
+   <script>(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/k2vsMPS6yFIY0fUsksUaQ.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})()</script>
+  </body>
+</html>

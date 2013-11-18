@@ -1,0 +1,14 @@
+logs
+project/project
+project/target
+target
+tmp
+.history
+dist
+conf/application-local.conf
+data
+_site
+node_modules
+public/js/concat.js
+public/js/*.min.js
+public/stylesheets

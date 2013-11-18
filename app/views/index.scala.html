@@ -1,0 +1,69 @@
+@(projects: List[Project])(implicit request: AuthenticatedRequest)
+
+@import emp.DateFormatter
+@import emp.util.Links
+@import views.html.util._
+
+@main(Messages("general.timeline")) {
+<div class="row-fluid">
+ <div class="span2">
+  <ul class="nav nav-list well well-small search-well">
+    <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
+    <span data-bind="visible: events().items().length == 0">@Messages("search.facet.none")</span>
+    <!-- ko foreach: filters -->
+    <li class="filter"><a data-bind="click: removeFilter" class="btn btn-mini btn-danger"><span data-bind="i18nText: [ 'filter_link_name', { 'name': name(), 'value': i18n.t(value()) } ]"></span><i class="pull-right icon-remove"></i></a></li>
+    <!-- /ko -->
+    <!-- ko foreach: events().facetCollection -->
+    <li class="nav-header" data-bind="text: nameI18N"><li>
+     <ul class="nav nav-list-sub" data-bind="foreach: facets">
+      <li><a data-bind="click: function(data, event) { addFilter(data, $parent) }"><span data-bind="text: valueI18N"></span> <span class="badge pull-right" data-bind="text: count"></span></a></li>
+     </ul>
+    <!-- /ko -->
+  </ul>
+  <div id="loading" style="display: none">
+   <div class="progress progress-striped active">
+    <div class="bar" style="width: 100%;"></div>
+   </div>
+  </div>
+ </div>
+ <div class="span10">
+ <h1>@Messages("general.timeline")</h1>
+  <div class="alert alert-info" data-bind="visible: events().total() == 0">@Messages("general.timeline.empty")</div>
+  <div data-bind="if: events().total() > 0">
+   <ul class="media-list" data-bind="foreach: events().items">
+    <li class="media">
+     <a class="pull-left" data-bind="attr: { href: '/user/' + userId() }"><img class="media-object" data-bind="attr: { src: 'https://secure.gravatar.com/avatar/' + userEmailDigest() + '?s=32' }"></a>
+     <div class="media-body">
+      <h4 class="media-heading">
+       <a data-bind="attr: { href: url() }"><i data-bind="css: iconClass"></i></a> <span data-bind="i18nHtml: [ 'TLINE_' + eType(), { 'user': userRealName(), 'id': eKey(), 'date': dateCreated() } ]"></span>
+      </h4>
+      <div class="media" data-bind="html: content"></div>
+     </div>
+    </li>
+   </ul>
+   <span data-bind="i18nText: [ 'pager_summary', { 'start': events().first(), 'finish': events().last(), 'total': events().total() } ]"></span>
+   <div class="pagination pull-right">
+    <ul>
+     <li data-bind="click: function(data) { changePage(events().prev()) }"><a><i class="icon-double-angle-left"></i></a></li>
+     <!-- ko foreach: events().window -->
+     <li data-bind="css: { active: $data == events().page() }"><a data-bind="click: changePage, text: $data"></a></li>
+     <!-- /ko -->
+     <li data-bind="click: function(data) { changePage(events().next()) }"><a><i class="icon-double-angle-right"></i></a></li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</div>
+<script>
+$(function(){
+  $(document).ajaxStart(function() {
+    $("#loading").show(0);
+  }).ajaxComplete(function() {
+    $("#loading").hide(0)
+  });
+
+  var view = TimelineViewModel();
+  ko.applyBindings(view);
+});
+</script>
+}

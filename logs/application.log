@@ -1,0 +1,183 @@
+2013-11-17 21:24:51,416 - [INFO] - from play in pool-4-thread-2 
+Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+2013-11-17 21:25:15,268 - [WARN] - from com.jolbox.bonecp.BoneCPConfig in play-internal-execution-context-1 
+releaseHelperThreads has been deprecated -- it tends to slow down your application more.
+
+2013-11-17 21:25:15,274 - [WARN] - from com.jolbox.bonecp.BoneCPConfig in play-internal-execution-context-1 
+JDBC password was not set in config!
+
+2013-11-17 21:25:15,358 - [INFO] - from play in play-internal-execution-context-1 
+database [default] connected at jdbc:postgresql://localhost:5432/emperor?ApplicationName=Emperor
+
+2013-11-17 21:25:15,419 - [ERROR] - from application in New I/O worker #1 
+
+
+! @6gag3j0j0 - Internal server error, for (GET) [/] ->
+
+play.api.db.evolutions.InvalidDatabaseRevision: Database 'default' needs evolution![An SQL script need to be run on your database.]
+	at play.api.db.evolutions.EvolutionsPlugin$$anonfun$onStart$1$$anonfun$apply$1.apply$mcV$sp(Evolutions.scala:486) ~[play-jdbc_2.10-2.2.0.jar:2.2.0]
+	at play.api.db.evolutions.EvolutionsPlugin.withLock(Evolutions.scala:507) ~[play-jdbc_2.10-2.2.0.jar:2.2.0]
+	at play.api.db.evolutions.EvolutionsPlugin$$anonfun$onStart$1.apply(Evolutions.scala:461) ~[play-jdbc_2.10-2.2.0.jar:2.2.0]
+	at play.api.db.evolutions.EvolutionsPlugin$$anonfun$onStart$1.apply(Evolutions.scala:459) ~[play-jdbc_2.10-2.2.0.jar:2.2.0]
+	at scala.collection.immutable.List.foreach(List.scala:318) ~[scala-library.jar:na]
+	at play.api.db.evolutions.EvolutionsPlugin.onStart(Evolutions.scala:459) ~[play-jdbc_2.10-2.2.0.jar:2.2.0]
+	at play.api.Play$$anonfun$start$1$$anonfun$apply$mcV$sp$1.apply(Play.scala:88) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.api.Play$$anonfun$start$1$$anonfun$apply$mcV$sp$1.apply(Play.scala:88) ~[play_2.10-2.2.0.jar:2.2.0]
+	at scala.collection.immutable.List.foreach(List.scala:318) ~[scala-library.jar:na]
+	at play.api.Play$$anonfun$start$1.apply$mcV$sp(Play.scala:88) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.api.Play$$anonfun$start$1.apply(Play.scala:88) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.api.Play$$anonfun$start$1.apply(Play.scala:88) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.utils.Threads$.withContextClassLoader(Threads.scala:18) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.api.Play$.start(Play.scala:87) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1$$anonfun$1.apply(ApplicationProvider.scala:139) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1$$anonfun$1.apply(ApplicationProvider.scala:112) ~[play_2.10-2.2.0.jar:2.2.0]
+	at scala.Option.map(Option.scala:145) ~[scala-library.jar:na]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1.apply(ApplicationProvider.scala:112) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1.apply(ApplicationProvider.scala:110) ~[play_2.10-2.2.0.jar:2.2.0]
+	at scala.util.Success.flatMap(Try.scala:200) ~[scala-library.jar:na]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:110) ~[play_2.10-2.2.0.jar:2.2.0]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:102) ~[play_2.10-2.2.0.jar:2.2.0]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) ~[scala-library.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask$AdaptedRunnableAction.exec(ForkJoinTask.java:1361) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979) ~[scala-library.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107) ~[scala-library.jar:na]
+
+2013-11-17 21:25:15,859 - [INFO] - from akka.event.slf4j.Slf4jLogger in play-akka.actor.default-dispatcher-3 
+Slf4jLogger started
+
+2013-11-17 21:25:27,952 - [INFO] - from application in play-internal-execution-context-1 
+Application shutdown...
+
+2013-11-17 21:25:27,953 - [INFO] - from com.jolbox.bonecp.BoneCP in play-internal-execution-context-1 
+Shutting down connection pool...
+
+2013-11-17 21:25:27,996 - [INFO] - from com.jolbox.bonecp.BoneCP in play-internal-execution-context-1 
+Connection pool has been shutdown.
+
+2013-11-17 21:25:28,099 - [WARN] - from com.jolbox.bonecp.BoneCPConfig in play-internal-execution-context-1 
+releaseHelperThreads has been deprecated -- it tends to slow down your application more.
+
+2013-11-17 21:25:28,100 - [WARN] - from com.jolbox.bonecp.BoneCPConfig in play-internal-execution-context-1 
+JDBC password was not set in config!
+
+2013-11-17 21:25:28,131 - [INFO] - from play in play-internal-execution-context-1 
+database [default] connected at jdbc:postgresql://localhost:5432/emperor?ApplicationName=Emperor
+
+2013-11-17 21:25:28,450 - [INFO] - from application in play-internal-execution-context-1 
+Application has started
+
+2013-11-17 21:25:28,466 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Email Notifier to 'ticket/changed'
+
+2013-11-17 21:25:28,470 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Email Notifier to 'ticket/created'
+
+2013-11-17 21:25:28,472 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Search Indexer to 'ticket/changed'
+
+2013-11-17 21:25:28,472 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Search Indexer to 'ticket/commentedon'
+
+2013-11-17 21:25:28,472 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Search Indexer to 'ticket/created'
+
+2013-11-17 21:25:28,472 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Search Indexer to 'ticket/linked'
+
+2013-11-17 21:25:28,472 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Search Indexer to 'ticket/unlinked'
+
+2013-11-17 21:25:28,474 - [DEBUG] - from application in play-internal-execution-context-1 
+Subscribed Forgot Password Notifier to 'user/forgotpassword'
+
+2013-11-17 21:25:28,477 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2013-11-17 21:25:28,751 - [DEBUG] - from application in play-akka.actor.default-dispatcher-3 
+Trying to connect to Some(http://localhost:9200)
+
+2013-11-17 21:30:04,627 - [DEBUG] - from application in play-akka.actor.default-dispatcher-14 
+Checking index events_1
+
+2013-11-17 21:30:04,629 - [DEBUG] - from application in play-akka.actor.default-dispatcher-14 
+Checking index tickets_1
+
+2013-11-17 21:30:04,631 - [DEBUG] - from application in play-akka.actor.default-dispatcher-14 
+Checking index ticket_comments_1
+
+2013-11-17 21:30:04,638 - [DEBUG] - from application in play-akka.actor.default-dispatcher-14 
+Reindexing
+
+2013-11-17 21:30:04,691 - [DEBUG] - from application in play-akka.actor.default-dispatcher-14 
+Aliasing events -read to events_1
+
+2013-11-17 21:30:04,693 - [DEBUG] - from application in play-akka.actor.default-dispatcher-14 
+Aliasing tickets -read to tickets_1
+
+2013-11-17 21:30:04,695 - [DEBUG] - from application in play-akka.actor.default-dispatcher-14 
+Aliasing ticket_comments -read to ticket_comments_1
+
+2013-11-17 21:30:11,778 - [DEBUG] - from application in play-akka.actor.default-dispatcher-12 
+Checking index events_2
+
+2013-11-17 21:30:11,779 - [DEBUG] - from application in play-akka.actor.default-dispatcher-12 
+Checking index tickets_2
+
+2013-11-17 21:30:11,780 - [DEBUG] - from application in play-akka.actor.default-dispatcher-12 
+Checking index ticket_comments_2
+
+2013-11-17 21:30:11,781 - [DEBUG] - from application in ForkJoinPool-4-worker-13 
+Creating index events_2
+
+2013-11-17 21:30:11,781 - [DEBUG] - from application in ForkJoinPool-4-worker-9 
+Creating index tickets_2
+
+2013-11-17 21:30:11,783 - [DEBUG] - from application in ForkJoinPool-4-worker-3 
+Creating index ticket_comments_2
+
+2013-11-17 21:30:11,865 - [DEBUG] - from application in ForkJoinPool-4-worker-9 
+Aliasing events -write to events_2
+
+2013-11-17 21:30:11,865 - [DEBUG] - from application in ForkJoinPool-4-worker-9 
+{ "remove": { "index": "events_1", "alias": "events-write" } }, { "add": { "index": events_2", "alias": "events-write" } }
+
+2013-11-17 21:30:11,887 - [DEBUG] - from application in ForkJoinPool-4-worker-3 
+Aliasing tickets -write to tickets_2
+
+2013-11-17 21:30:11,888 - [DEBUG] - from application in ForkJoinPool-4-worker-3 
+{ "remove": { "index": "tickets_1", "alias": "tickets-write" } }, { "add": { "index": tickets_2", "alias": "tickets-write" } }
+
+2013-11-17 21:30:11,917 - [DEBUG] - from application in ForkJoinPool-4-worker-13 
+Aliasing ticket_comments -write to ticket_comments_2
+
+2013-11-17 21:30:11,917 - [DEBUG] - from application in ForkJoinPool-4-worker-13 
+{ "remove": { "index": "ticket_comments_1", "alias": "ticket_comments-write" } }, { "add": { "index": ticket_comments_2", "alias": "ticket_comments-write" } }
+
+2013-11-17 21:30:11,985 - [DEBUG] - from application in play-akka.actor.default-dispatcher-12 
+Reindexing
+
+2013-11-17 21:30:12,021 - [DEBUG] - from application in play-akka.actor.default-dispatcher-12 
+Aliasing events -read to events_2
+
+2013-11-17 21:30:12,023 - [DEBUG] - from application in play-akka.actor.default-dispatcher-12 
+Aliasing tickets -read to tickets_2
+
+2013-11-17 21:30:12,024 - [DEBUG] - from application in play-akka.actor.default-dispatcher-12 
+Aliasing ticket_comments -read to ticket_comments_2
+
+2013-11-17 21:32:25,037 - [DEBUG] - from application in Emperor-akka.actor.default-dispatcher-5 
+Received create event for HIPHOP-1, indexing.
+
+2013-11-17 21:32:52,908 - [INFO] - from application in pool-4-thread-2 
+Application shutdown...
+
+2013-11-17 21:32:52,910 - [INFO] - from com.jolbox.bonecp.BoneCP in pool-4-thread-2 
+Shutting down connection pool...
+
+2013-11-17 21:32:52,911 - [INFO] - from com.jolbox.bonecp.BoneCP in pool-4-thread-2 
+Connection pool has been shutdown.
+

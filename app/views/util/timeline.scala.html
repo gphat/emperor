@@ -1,0 +1,42 @@
+@**
+ * Generate a timeline listing.
+ *@
+@(timeline: emp.util.Search.SearchResult[models.Event])(implicit request: AuthenticatedRequest)
+
+@import emp.DateFormatter
+
+@if(timeline.pager.items.isEmpty) {
+<div class="alert alert-info">@Messages("general.timeline.empty")</div>
+} else {
+<ul class="media-list">
+@timeline.pager.items.map { event =>
+<li class="media">
+   <a class="pull-left" href="@routes.User.item(event.userId)">@gravatar(event.userId, 32)</a>
+   <div class="media-body">
+    <h4 class="media-heading">
+     @defining(event.eType) { etype =>
+      @etype match {
+       case "commit" => {
+        <a href="@event.url"><i class="icon-cogs"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("commits", event.eKey)">@event.eKey</a>
+       }
+       case "comment" => {
+        <a href="@event.url"><i class="icon-comments"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
+       }
+       case "ticket_change" => {
+        <a href="@event.url"><i class="icon-edit"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
+       }
+       case "ticket_create" => {
+        <a href="@event.url"><i class="icon-certificate"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
+       }
+       case _ => { @etype }
+      }
+     }
+     @Messages("event.attribution.postfix") <time datetime="@DateFormatter.displayISO8601(event.dateCreated)" title="@DateFormatter.displayLongDateTime(event.dateCreated)">@DateFormatter.displayLongDateTime(event.dateCreated)</time>
+    </h4>
+    <div class="media">@Html(event.content)</div>
+  </div>
+</li>
+}
+</ul>
+@pager(timeline.pager)
+}

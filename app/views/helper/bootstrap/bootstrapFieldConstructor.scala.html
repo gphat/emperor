@@ -1,0 +1,20 @@
+@(elements: helper.FieldElements)
+
+@import play.api.i18n._
+@import views.html.helper._
+
+<div id="field-@elements.field.id" class="control-group @if(elements.hasErrors) {error}">
+ @if(!elements.args.get('hideLabel).isDefined) {
+ <label class="control-label" for="@elements.id">@elements.label</label>
+ }
+ <div class="controls">
+
+  <div class="@if(elements.args.get('prepend).isDefined) {input-prepend} @if(elements.args.get('append).isDefined) {input-append}">
+  @if(elements.args.get('prepend).isDefined) {
+  <span class="add-on">@elements.args.get('prepend)</span>
+  }
+  @elements.input @if(elements.args.get('append).isDefined) { <span class="add-on">@elements.args.get('append)</span> }
+  </div>
+  <span class="help-block">@elements.errors.mkString(", ")</span>
+ </div>
+</div>

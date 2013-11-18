@@ -1,0 +1,86 @@
+@(project: models.Project, projectJson: play.api.libs.json.JsValue, owner: Option[models.User])(implicit request: AuthenticatedRequest)
+
+@import emp._
+@import views.html.util._
+
+@main(title = Messages("project.with.id", project.name), currentProject = Some(project.id.get)) {
+<a id="helper" class="btn btn-mini btn-success"><i class="icon-question-sign"></i></a>
+<div id="help" class="alert alert-info" style="display: none">
+ <button id="helpcloser" type="button" class="close">&times;</button>
+ <strong>@Messages("help.projecthome.title")</strong> @Html(Messages("help.projecthome.blurb"))
+</div>
+<h1><a class="btn" href="@controllers.routes.Project.edit(project.id.get)"><i class="icon-edit"></i></a> @Messages("project.with.id", project.name)</h1>
+<div class="row-fluid">
+ <div class="span3">
+   <ul class="well well-small nav nav-list">
+    <li class="nav-header">@Messages("project.summary.links")</li>
+    <li><a href="@routes.Board.index(project.id.get)">@Messages("project.summary.link.kanban")</a></li>
+    <li><a href="@routes.Search.index()?project=@project.name">@Messages("project.summary.link.all_tickets")</a></li>
+    <li><a href="@routes.Search.index()?project=@project.name&resolution=TICK_RESO_UNRESOLVED">@Messages("project.summary.link.open_tickets")</a></li>
+    <li class="nav-header">@Messages("project.summary.milestones")</li>
+    <!-- ko foreach: milestones().items -->
+    <li><a data-bind="attr: { href: '/ticket/' + ticketId() }"><span data-bind="text: ticketId"></span>: <span data-bind="attr: { href: '/ticket/' + ticketId() }, text: summary"></span></a></li>
+    <!-- /ko -->
+    <li><div class="alert alert-info">@Messages("general.milestones.empty")</div></li>
+   </ul>
+   <div id="loading" style="display: none">
+    <div class="progress progress-striped active">
+     <div class="bar" style="width: 100%;"></div>
+    </div>
+   </div>
+ </div>
+ <div class="span6">
+  <h2>@Messages("general.timeline")</h2>
+  <div class="alert alert-info" data-bind="display: events().total > 0">@Messages("general.timeline.empty")</div>
+  <div data-bind="if: events().total > 0">
+   <ul class="media-list" data-bind="foreach: events().items">
+    <li class="media">
+     <a class="pull-left" data-bind="attr: { href: '/user/' + userId() }"><img class="media-object" data-bind="attr: { src: 'https://secure.gravatar.com/avatar/' + userEmailDigest() + '?s=32' }"></a>
+     <div class="media-body">
+      <h4 class="media-heading">
+       <a data-bind="attr: { href: url() }"><i data-bind="css: iconClass"></i></a> <span data-bind="i18nHtml: [ eType(), { 'user': userRealName(), 'id': eKey(), 'date': dateCreated() } ]"></span>
+      </h4>
+      <div class="media" data-bind="html: content"></div>
+     </div>
+    </li>
+   </ul>
+   <span data-bind="i18nText: [ 'pager_summary', { 'start': events().first(), 'finish': events().last(), 'total': events().total() } ]"></span>
+   <div class="pagination pull-right">
+    <ul>
+     <li data-bind="click: function(data) { changePage(events().prev()) }"><a><i class="icon-double-angle-left"></i></a></li>
+     <!-- ko foreach: events().window -->
+     <li data-bind="css: { active: $data == events().page() }"><a data-bind="click: changePage, text: $data"></a></li>
+     <!-- /ko -->
+     <li data-bind="click: function(data) { changePage(events().next()) }"><a><i class="icon-double-angle-right"></i></a></li>
+    </ul>
+   </div>
+  </div>
+ </div>
+ <div class="span3">
+  <h2>@Messages("project.summary.owner")</h2>
+  @if(owner.isDefined) {
+   @owner.map { o =>
+   <div class="profile">
+    @gravatar(o.id.get)
+    <div><i class="icon-user"></i> @o.realName</div>
+    <div><i class="icon-envelope"></i> <a href="mailto:@o.username">@o.username</a></div>
+   </div>
+   }
+  } else {
+    @Messages("project.summary.unowned")
+  }
+ </div>
+</div>
+<script>
+$(function(){
+  var view = ProjectViewModel(@Html(projectJson.toString));
+  ko.applyBindings(view);
+
+  $(document).ajaxStart(function() {
+    $("#loading").show(0);
+  }).ajaxComplete(function() {
+    $("#loading").hide(0)
+  });
+});
+</script>
+}

@@ -1,0 +1,22 @@
+@(id: Long, objForm: Form[(Project)], users: List[(String,String)], asses: List[(String,String)], ttypes: List[(String,String)], priorities: List[(String,String)], severities: List[(String,String)])(implicit request: AuthenticatedRequest)
+
+@import helper._
+@import helper.bootstrap.bootstrapField
+
+@main(Messages("project.edit")) {
+<h1>@Messages("project.edit")</h1>
+@helper.form(action = routes.Project.update(id)) {
+ <fieldset>
+  @helper.inputText(objForm("name"), '_label -> Messages("project.name"))
+  @helper.select(field = objForm("owner_id"), options = users, args = '_label -> Messages("project.owner"))
+  @helper.select(field = objForm("default_assignee"), options = asses, args = '_label -> Messages("project.default.assignee"))
+  @helper.select(field = objForm("default_priority_id"), options = priorities, args = '_label -> Messages("project.default.priority"))
+  @helper.select(field = objForm("default_severity_id"), options = severities, args = '_label -> Messages("project.default.severity"))
+  @helper.select(field = objForm("default_type_id"), options = ttypes, args = '_label -> Messages("project.default.ttype"))
+  <div class="form-actions">
+   <a href="@controllers.routes.Project.index()" class="btn"><i class="icon-remove"></i> @Messages("form.cancel")</a>
+   <button type="submit" class="btn btn-primary"><i class="icon-check"></i> @Messages("form.submit")</button>
+  </div>
+ </fieldset>
+}
+}

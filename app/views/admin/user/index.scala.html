@@ -1,0 +1,48 @@
+@(page: emp.util.Pagination.Page[models.User])(implicit request: AuthenticatedRequest)
+
+@import views.html.util._
+
+@main(Messages("admin.user.list")) {
+<ul class="breadcrumb">
+ <li>
+  <a href="@routes.Admin.index">@Messages("general.admin")</a>
+ </li>
+ <li class="divider"><i class="icon-ellipsis-vertical"></i></li>
+ <li class="active">@Messages("admin.user.list")</li>
+</ul>
+<div class="btn-group btn-group-above-table pull-right">
+ <a href="@controllers.admin.routes.User.create" class="btn"><i class="icon-plus-sign"></i> @Messages("admin.user.add")</a>
+</div>
+<h1>@Messages("admin.user.list")</h1>
+@Option(page.items).filterNot(_.isEmpty).map { users =>
+<table class="table table-bordered table-rounded table-striped">
+ <thead>
+  <th>@Messages("user.username")</th>
+  <th>@Messages("user.realname")</th>
+  <th>@Messages("general.actions")</th>
+ </thead>
+ <tbody>
+  @users.map { user =>
+  <tr>
+   <td><a href="@controllers.routes.User.item(user.id.get)">@user.username</a></td>
+   <td>@Messages(user.realName)</td>
+   <td class="actions" style="width: 10%">
+    <div class="btn-toolbar">
+     <div class="btn-group">
+      <a class="btn btn-mini" href="@controllers.routes.User.edit(user.id.get)"><i class="icon-edit"></i> @Messages("general.edit")</a>
+     </div>
+    </div>
+   </td>
+  </tr>
+  }
+ </tbody>
+ <tfoot>
+  <tr>
+   <td colspan="4">
+     @pager(page)
+    </td>
+   </tr>
+ </tfoot>
+</table>
+}
+}

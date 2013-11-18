@@ -1,0 +1,75 @@
+@(project: models.Project, workflow: Seq[models.WorkflowStatus])(implicit request: AuthenticatedRequest)
+
+@import emp.JsonFormats._
+@import emp.util.Links
+@import play.api.libs.json.Json
+
+@main(currentProject = Some(project.id.get), title = Messages("general.board")) {
+<a id="helper" class="btn btn-mini btn-success"><i class="icon-question-sign"></i></a>
+<div id="help" class="alert alert-info" style="display: none">
+ <button id="helpcloser" type="button" class="close">&times;</button>
+ <strong>@Messages("help.kanban.title")</strong> @Html(Messages("help.kanban.blurb"))
+</div>
+<h1>@Messages("board.title", project.name)</h1>
+<div class="row-fluid">
+ <div class="span2">
+  <ul class="nav nav-list well well-small search-well">
+    <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
+    <span data-bind="visible: pager().items().length == 0">@Messages("search.facet.none")</span>
+    <!-- ko foreach: filters -->
+    <li class="filter"><a id="help" data-bind="click: removeFilter" style="text-align: left" class="btn btn-mini btn-danger"><span data-bind="i18nText: [ 'filter_link_name', { 'name': name(), 'value': i18n.t(valueI18N()) } ]"></span><i class="icon-remove pull-right"></i></a></li>
+    <!-- /ko -->
+    <!-- ko foreach: pager().facetCollection -->
+    <li class="nav-header" data-bind="text: nameI18N"><li>
+    <!-- ko foreach: facets -->
+    <li><a data-bind="click: function(data, event) { addFilter(data, $parent) }"><span data-bind="text: valueI18N"></span> <span class="badge pull-right" data-bind="text: count"></span></a></li>
+    <!-- /ko -->
+    <!-- /ko -->
+  </ul>
+  <div id="loading" style="display: none">
+   <div class="progress progress-striped active">
+    <div class="bar" style="width: 100%;"></div>
+   </div>
+  </div>
+ </div>
+ <div class="span10 board">
+  <div>
+   <div class="alert alert-info" data-bind="visible: empty">@Messages("general.board.empty")</div>
+  </div>
+  <div data-bind="visible: intendedMover" class="drawer">
+  <form>
+   <p>@Messages("board.confirm.status") <strong data-bind="text: intendedStatus().nameI18N"></strong></p>
+   <textarea rows="2" data-bind="value: statusComment" placeholder="@Messages("ticket.comment.placeholder")" class="span12"></textarea>
+   <div class="form-actions">
+   <a class="btn" data-bind="click: clearAll">@Messages("form.cancel")</a>
+    <button type="submit" data-bind="click: doMove" class="btn btn-primary">@Messages("form.submit")</button>
+   </div>
+  </form>
+  </div>
+  <div class="columns">
+   <div class="wrapper">
+   @workflow.map{ status =>
+    <div class="column">
+     <h5>@Messages(status.name)</h5>
+     <ul data-status-id="@status.id" data-status-name-i18n="@Messages(status.name)" data-bind="event: { dragenter: highlight, dragover: dragOver, dragleave: unhighlight, drop: drop }, foreach: columns['@{status.name}']">
+      <li draggable="true" data-bind="attr: { id: ticketId }, event: { dragstart: dragStart, dragend: dragEnd }"><span class="label" data-bind="style: { 'backgroundColor': '#' + typeColor() }, text: typeNameI18N"></span><a data-bind="text: ticketId, attr: { href: url }"></a>: <span data-bind="html: summary"></span></li>
+     </ul>
+    </div>
+   }
+   </div>
+  </div>
+ </div>
+</div>
+<script>
+$(function(){
+  $(document).ajaxStart(function() {
+    $("#loading").show(0);
+  }).ajaxComplete(function() {
+    $("#loading").hide(0)
+  });
+
+  var view = BoardViewModel("@project.name", @Html(Json.toJson(workflow).toString));
+  ko.applyBindings(view);
+});
+</script>
+}

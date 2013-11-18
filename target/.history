@@ -1,0 +1,25 @@
+run
+reload
+run
+reload
+run
+last *:update
+reload
+run
+cd ~/sr
+run
+clean
+compile
+dist
+clean
+clean-dist
+stage
+dist
+clean
+compile
+dist
+run
+clean
+run
+rim
+run

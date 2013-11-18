@@ -1,0 +1,35 @@
+@(objForm: Form[(User)])(implicit request: AuthenticatedRequest)
+
+@import emp.DateFormatter
+@import helper._
+@import helper.bootstrap.bootstrapField
+
+@main(Messages("admin.user.add")) {
+<ul class="breadcrumb">
+ <li>
+  <a href="@routes.Admin.index">@Messages("admin.general")</a>
+ </li>
+ <li>
+  <a href="@controllers.admin.routes.User.index()">@Messages("admin.user.list")</a>
+ </li>
+ <li class="active">@Messages("admin.user.add")</li>
+</ul>
+<h1>@Messages("admin.user.add")</h1>
+@helper.form(action = controllers.admin.routes.User.add) {
+ <fieldset>
+  @helper.input(objForm("username"), '_label -> Messages("user.email")) { (id, name, value, args) =>
+   <input type="email" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
+  }
+  @helper.checkbox(objForm("admin"), '_label -> Messages("user.admin"))
+  @helper.inputPassword(objForm("password"), '_label -> Messages("user.password"))
+  @helper.inputText(objForm("realName"), '_label -> Messages("user.realname"))
+  @helper.select(field = objForm("timezone"), options = DateFormatter.timeZoneList, '_label -> Messages("user.timezone"))
+  @helper.inputText(objForm("location"), '_label -> Messages("user.location"))
+  @helper.inputText(objForm("url"), '_label -> Messages("user.url"))
+  @helper.inputText(objForm("title"), '_label -> Messages("user.title"))
+  <div class="form-actions">
+   <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
+  </div>
+ </fieldset>
+}
+}

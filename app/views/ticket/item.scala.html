@@ -1,0 +1,193 @@
+@(ticket: models.FullTicket,
+  ticketJson: play.api.libs.json.JsValue,
+  assignees: List[(String,String)],
+  assignForm: Form[models.Assignment]
+)(implicit request: AuthenticatedRequest)
+
+@import emp.DateFormatter
+@import emp.text.Renderer
+@import helper.bootstrap.bootstrapField
+@import views.html.util._
+
+@main(title = Messages("ticket.page.title", ticket.ticketId, ticket.summary), currentProject = Some(ticket.project.id)) {
+  <div class="statuses">
+   <div class="btn-group" data-bind="foreach: statuses, visible: !ticket().resolutionId()">
+    <a class="btn" data-bind="click: pickStatus, css: { 'active': id() == ticket().workflowStatusId() }"><i data-bind="visible: id() == ticket().workflowStatusId()" class="icon-map-marker"></i> <span data-bind="text: nameI18N"></span></a>
+   </div>
+  </div>
+
+  <div class="card">
+   <header data-bind="style: { backgroundColor: '#' + ticket().typeColor() }">
+    <hgroup>
+     <a class="btn pull-left" href="/ticket/edit/@ticket.ticketId"><i class="icon-edit"></i></a>
+     <h1><span data-bind="text: ticket().typeNameI18N"></span>: <span data-bind="text: ticket().summary"></span></h1>
+     <h4>
+      <a data-bind="attr: { href: '/project/' + ticket().projectId() }, text: ticket().projectName"></a>: <span data-bind="text: ticket().ticketId"></span>
+     </h4>
+    </hgroup>
+    <div class="pull-right">
+    </div>
+   </header>
+   <div class="drawer" data-bind="template: { name: 'action-' + action() + '-template', if: action() }, visible: action()"></div>
+   <div class="description" data-bind="html: ticket().description"></div>
+   <div class="card-info">
+    <ul>
+     <li>
+      @Messages("ticket.assignee")
+      <span data-bind="visible: ticket().assigneeId"><a class="action btn btn-small" data-bind="click: function(data) { action('assign') }"><i class="icon-edit"></i> <span data-bind="text: ticket().assigneeName"></span></a></span>
+      <span data-bind="visible: !ticket().assigneeId()"><a class="action btn btn-small" data-bind="click: function(data) { action('assign') }"><i class="icon-edit"></i> <span>@Messages("ticket.unassigned")</span></a></span>
+     </li>
+     <li>@Messages("ticket.reporter") <strong><a data-bind="attr: { href: '/user/' + ticket().userId() }, text: ticket().userName"></a></strong></li>
+     <li data-bind="style: { borderTopColor: '#' + ticket().priorityColor() }">@Messages("ticket.priority") <strong data-bind="text: ticket().priorityNameI18N"></strong></li>
+     <li data-bind="style: { borderTopColor: '#' + ticket().severityColor() }">@Messages("ticket.severity") <strong data-bind="text: ticket().severityNameI18N"></strong></li>
+     <li>@Messages("ticket.resolution") <strong data-bind="text: ticket().resolutionNameI18N"></strong></li>
+     <li>
+      <a class="btn btn-danger" data-bind="click: function(data) { action('unresolve') }, visible: ticket().resolutionId()"><i class="icon-remove-sign"></i> @Messages("ticket.unresolve")</a>
+      <a class="btn btn-success" data-bind="click: function(data) { action('resolve') }, visible: !ticket().resolutionId()"><i class="icon-check-sign"></i> @Messages("ticket.resolve")</a>
+     </li>
+    </ul>
+   </div>
+  </div>
+
+  <div id="loading" style="display: none; margin-top: 5px">
+   <div class="progress progress-striped active">
+    <div class="bar" style="width: 100%;"></div>
+   </div>
+  </div>
+
+  <div id="link-body" ng-show="links.length > 0">
+   <h4>@Messages("ticket.links") <a class="pull-right btn btn-small" data-bind="click: function(data) { action('link') }" class="btn"><i class="icon-link"></i> @Messages("ticket.action.link")</a></h4>
+    <table class="table table-striped table-condensed ticket-links">
+     <tbody data-bind="foreach: links">
+      <tr>
+       <td class="type" data-bind="text: typeNameI18N"></td>
+       <td data-bind="css: { resolved: childResolutionId }" class="link"><a data-bind="attr: { href: '/ticket/' + childTicketId() }, text: childTicketId"></a></td>
+       <td data-bind="text: childSummary" class="link"></td>
+       <td class="actions"><a data-bind="click: removeLink"><i class="remover icon-remove"></a></td>
+      </tr>
+     </tbody>
+    </table>
+  </div>
+  <div id="tabarea">
+   <ul class="nav nav-tabs nav-append-content">
+    <li data-bind="css: { active: tab() == 'comments' }"><a data-bind="click: function() { changeTab('comments') }">@Messages("ticket.comment.list")</a></li>
+    <li data-bind="css: { active: tab() == 'commits' }"><a data-bind="click: function() { changeTab('commits') }">@Messages("ticket.commit.list")</a></li>
+    <li data-bind="css: { active: tab() == 'history' }"><a data-bind="click: function() { changeTab('history') }">@Messages("ticket.history.list")</a></li>
+   </ul>
+   <div class="tab-content" data-bind="template: { name: tab() + '-template' }"></div>
+  </div>
+
+<script type="text/html" id="action-assign-template">
+ <form>
+  <div class="control-group">
+   <label class="control-label" for="intendedAssignee">@Messages("ticket.assignee")</label>
+   <select data-bind="options: assignees, optionsText: 'realName', optionsValue: 'id', value: intendedAssignee" required ng-model="intendedAssignee" id="intendedAssignee" name="intendedAssignee"></select>
+  </div>
+  <textarea rows="2" data-bind="value: actionComment" placeholder="@Messages("ticket.comment.placeholder")" class="span12"></textarea>
+  <div class="form-actions">
+   <a class="btn" data-bind="click: clearAll">@Messages("form.cancel")</a>
+   <button type="submit" data-bind="click: doAssign" class="btn btn-primary">@Messages("form.submit")</button>
+  </div>
+ </form>
+</script>
+<script type="text/html" id="action-link-template">
+ <form name="linkForm" ng-submit="doLink()">
+  <div class="control-group">
+   <label class="control-label" for="linkTypeId">@Messages("ticket.linktype")</label>
+   <div class="controls">
+    <select data-bind="options: linkTypes, optionsText: 'nameI18N', optionsValue: 'id', value: linkTypeId" id="linkTypeId"></select>
+   </div>
+  </div>
+  <ul class="unstyled inline" data-bind="foreach: intendedLinkTickets">
+   <li><span class="label label-info label-removable"><span data-bind="text: ticketId"></span> &nbsp;<a class="remover" data-bind="click: function(il) { intendedLinkTickets.remove(il) }"><i class="icon-remove"></i></a></span></li>
+  </ul>
+  <div class="control-group">
+   <label class="control-label" for="linkTick">@Messages("ticket.linkticket")</label>
+   <div class="controls">
+    <input type="text" data-bind="value: instantLinkSearch, valueUpdate: 'keyup'" id="linkTick" name="linkTick" class="span2">
+   </div>
+  </div>
+  <ul data-bind="foreach: linkTickets">
+   <li><a data-bind="click: function(data) { if(intendedLinkTickets.indexOf(data) < 0) { intendedLinkTickets.push(data) } }"><span data-bind="text: ticketId"></span> <span data-bind="text: summary"></span></a></li>
+  </ul>
+  <div class="form-actions">
+   <a class="btn" data-bind="click: clearAll">@Messages("form.cancel")</a>
+   <button type="submit" data-bind="click: doLink" class="btn btn-primary">@Messages("form.submit")</button>
+  </div>
+ </form>
+</script>
+<script type="text/html" id="action-resolve-template">
+ <form>
+  <div class="control-group">
+   <label class="control-label" for="resolutionId">@Messages("ticket.resolution")</label>
+   <select data-bind="options: resolutions, optionsText: 'nameI18N', optionsValue: 'id', value: intendedResolution"></select>
+  </div>
+  <textarea rows="2" data-bind="value: actionComment" placeholder="@Messages("ticket.comment.placeholder")" class="span12"></textarea>
+  <div class="form-actions">
+   <a class="btn" data-bind="click: clearAll">@Messages("form.cancel")</a>
+   <button type="submit" data-bind="click: doResolve" class="btn btn-primary">@Messages("form.submit")</button>
+  </div>
+ </form>
+</script>
+<script type="text/html" id="action-status-template">
+ <form>
+  <textarea rows="2" data-bind="value: actionComment" placeholder="@Messages("ticket.comment.placeholder")" class="span12"></textarea>
+  <div class="form-actions">
+   <a class="btn" data-bind="click: clearAll">@Messages("form.cancel")</a>
+   <button type="submit" data-bind="click: doChangeStatus" class="btn btn-primary">@Messages("form.submit")</button>
+  </div>
+ </form>
+</script>
+<script type="text/html" id="action-unresolve-template">
+ <form>
+  <textarea rows="2" data-bind="value: actionComment" placeholder="@Messages("ticket.comment.placeholder")" class="span12"></textarea>
+  <div class="form-actions">
+   <a class="btn" data-bind="click: clearAll">@Messages("form.cancel")</a>
+   <button type="submit" data-bind="click: doUnResolve" class="btn btn-primary">@Messages("form.submit")</button>
+  </div>
+ </form>
+</script>
+<script type="text/html" id="comments-template">
+ <ul class="media-list" data-bind="foreach: comments">
+  <li class="media">
+   <a class="pull-left" data-bind="attr: { href: '/user/' + userId() }"><img class="media-object" data-bind="attr: { src: 'https://secure.gravatar.com/avatar/' + userEmailDigest() + '?s=32' }"></a>
+   <div class="media-body">
+    <h4 class="media-heading"><a data-bind="attr: { name: 'comment-' + id() }"></a>@Messages("ticket.comment.attribution.prefix") <a data-bind="attr: { href: '/user/' + userId() }, text: userRealName"></a> @Messages("ticket.comment.postfix") <time data-bind="attr: { datetime: dateCreated(), title: dateCreated() }, text: dateCreated()"></time></h4>
+    <div class="media"><span data-bind="html: content"></span></div>
+   </div>
+  </li>
+ </ul>
+ <form class="form-linline comment">
+  <fieldset>
+   <button data-bind="click: doComment" class="btn btn-primary"  style="vertical-align: top"><i class="icon-check"></i> @Messages("ticket.comment")</button>
+   <textarea class="span12" rows="1" data-bind="value: comment" name="comment" id="comment" placeholder="@Messages("ticket.comment.placeholder")"></textarea>
+  </fieldset>
+ </form>
+</script>
+<script type="text/html" id="commits-template">
+ <ul class="media-list" data-bind="foreach: commits">
+  <li class="media">
+   <a class="pull-left" data-bind="attr: { href: '/user/' + userId }"><img class="media-object" data-bind="attr: { src: 'https://secure.gravatar.com/avatar/' + userEmailDigest() + '?s=32' }"></a>
+   <div class="media-body">
+    <h4 class="media-heading"><a data-bind="attr: { name: 'comment-' + id() }"></a>@Messages("ticket.comment.attribution.prefix") <a data-bind="attr: { href: '/user/' + userId() }, text: userRealName"></a> @Messages("ticket.comment.postfix") <time data-bind="attr: { datetime: dateCreated(), title: dateCreated() }, text: dateCreated()"></time></h4>
+    <div class="media" data-bind="html: content"></div>
+   </div>
+  </li>
+ </ul>
+</script>
+<script type="text/html" id="history-template">
+</script>
+
+<script>
+$(function(){
+  $(document).ajaxStart(function() {
+    $("#loading").show(0);
+  }).ajaxComplete(function() {
+    $("#loading").hide(0)
+  });
+
+  var view = TicketViewModel(@Html(ticketJson.toString));
+  ko.applyBindings(view);
+});
+</script>
+}

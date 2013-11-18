@@ -1,0 +1,35 @@
+@**
+ * Generate the top menu.
+ *@
+@(currentProject: Option[Long] = None)(implicit request: AuthenticatedRequest)
+
+<ul class="nav">
+ <li @if(request.path.startsWith("/ticket/create")) { class="active" }><a href="@controllers.routes.Ticket.create(project = currentProject)" target="_self">@Messages("ticket.add")</a></li>
+ <li @if(request.path.startsWith("/search")) { class="active" }><a href="@controllers.routes.Search.index()" target="_self">@Messages("general.ticket")</a></li>
+ <li @if(request.path.startsWith("/project")) { class="active" }><a href="@controllers.routes.Project.index()" target="_self">@Messages("general.projects")</a></li>
+ <li @if(request.path.startsWith("/admin")) { class="active" }><a href="@controllers.routes.Admin.index()" target="_self">@Messages("general.admin")</a></li>
+</ul>
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><i class="icon-align-justify"></i></a>
+<div class="nav-collapse collapse navbar-responsive-collapse in">
+ @helper.form(action = routes.Search.index(page = 1, count = 10), 'class -> "navbar-search form-search pull-left") {
+  <div class="input-append">
+   <input type="text" name="query" class="search-query span2" placeholder="@Messages("search.placeholder")">
+   <span class="add-on"><i class="icon-search"></i></span>
+  </div>
+ }
+ <ul class="nav pull-right">
+  @if(request.user.isAnonymous) {
+   <a href="@controllers.routes.Auth.login(redirectUrl = request.request.uri)" class="btn btn-primary" target="_self">@Messages("auth.login")</a>
+  } else {
+   <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+     @request.user.username <i class="icon-caret-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+     <li><a href="@controllers.routes.User.edit(request.user.id.get)" target="_self"><i class="icon-user"></i> @Messages("user.account")</a></li>
+     <li><a href="@routes.Auth.logout" target="_self"><i class="icon-signout"></i> @Messages("auth.logout")</a></li>
+    </ul>
+   </li>
+  }
+ </ul>
+</div>

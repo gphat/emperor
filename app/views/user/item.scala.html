@@ -1,0 +1,31 @@
+@(user: models.User)(implicit request: AuthenticatedRequest)
+
+@import emp._
+@import views.html.util._
+
+@main(title = Messages("user.with.id", user.realName)) {
+<div class="row-fluid">
+ <div class="span3">
+  <div class="bigprofile">
+   @gravatar(user.id.get, 80)
+   <h2>@Messages(user.realName)</h2>
+   <h4><i class="icon-envelope"></i> <a href="mailto:@user.username">@user.username</a></h4>
+   @if(user.location.isDefined) {
+   <div><i class="icon-map-marker"></i> @user.location</div>
+   }
+   @if(user.title.isDefined) {
+   <div><i class="icon-briefcase"></i> @user.title</div>
+   }
+   @if(user.url.isDefined) {
+   <div><i class="icon-globe"></i> <a href="@user.url">@user.url</a></div>
+   }
+  </div>
+ </div>
+ <div class="span6">
+  <h2>@Messages("general.timeline")</h2>
+  
+ </div>
+ <div class="span3">
+ </div>
+</div>
+}

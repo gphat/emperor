@@ -1,0 +1,85 @@
+@(implicit request: AuthenticatedRequest)
+
+@import emp.util.Links
+@import views.html.util._
+
+@main(Messages("search.results")) {
+<div class="row-fluid">
+ <div class="span2">
+  <ul class="nav nav-list well well-small search-well">
+    <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
+    <span data-bind="visible: pager().items().length == 0">@Messages("search.facet.none")</span>
+    <!-- ko foreach: filters -->
+    <li class="filter"><a data-bind="click: removeFilter" class="btn btn-mini btn-danger"><span data-bind="i18nText: [ 'filter_link_name', { 'name': name(), 'value': i18n.t(value()) } ]"></span><i class="pull-right icon-remove"></i></a></li>
+    <!-- /ko -->
+    <!-- ko foreach: pager().facetCollection -->
+    <li class="nav-header" data-bind="text: nameI18N"><li>
+     <ul class="nav nav-list-sub" data-bind="foreach: facets">
+      <li><a data-bind="click: function(data, event) { addFilter(data, $parent) }"><span data-bind="text: valueI18N"></span> <span class="badge pull-right" data-bind="text: count"></span></a></li>
+     </ul>
+    <!-- /ko -->
+  </ul>
+  <div id="loading" style="display: none">
+   <div class="progress progress-striped active">
+    <div class="bar" style="width: 100%;"></div>
+   </div>
+  </div>
+ </div>
+ <div class="span10">
+  <div data-bind="visible: pager().items().length == 0" class="alert alert-warning">@Messages("search.results.none")</div>
+  <table class="table table-bordered table-hover table-rounded table-striped ticket-search" data-bind="visible: pager().items().length > 0">
+   <thead>
+    <th><a href="#" data-bind="click: function(data, event) { changeSort('id', data, event) }">@Messages("ticket.ticket")</a></th>
+    <th><a data-bind="click: function(data, event) { changeSort('type', data, event) }">@Messages("ticket.type")</a></th>
+    <th><a data-bind="click: function(data, event) { changeSort('status', data, event) }">@Messages("ticket.status")</a></th>
+    <th>@Messages("ticket.summary")</th>
+    <th><a data-bind="click: function(data, event) { changeSort('priority', data, event) }">@Messages("ticket.priority")</a></th>
+    <th><a data-bind="click: function(data, event) { changeSort('severity', data, event) }">@Messages("ticket.severity")</a></th>
+   </thead>
+   <tbody data-bind="foreach: pager().items">
+    <tr data-bind="css: { resolved: resolutionId }">
+     <td style="width: 10%"><a data-bind="attr: { href: url }, text: ticketId"></a></td>
+     <td><span class="label" data-bind="style: { 'backgroundColor': '#' + typeColor() }, text: typeNameI18N"></span></td>
+     <td><span class="label" data-bind="text: statusNameI18N, visible: !resolutionId()"></span></td>
+     <td style="width: 80%"><a data-bind="attr: { href: url }, html: summary"></a></td>
+     <td><span class="label" data-bind="style: { 'backgroundColor': '#' + priorityColor() }, text: priorityNameI18N"></span></td>
+     <td><span class="label" data-bind="style: { 'backgroundColor': '#' + severityColor() }, text: severityNameI18N"></span></td>
+    </tr>
+   </tbody>
+   <tfoot>
+    <tr>
+     <td colspan="7">
+      <span data-bind="i18nText: [ 'pager_summary', { 'start': pager().first(), 'finish': pager().last(), 'total': pager().total() } ]"></span>
+      <div class="pagination pull-right">
+        <ul>
+          <li data-bind="click: function(data) { changePage(pager().prev()) }, css: { disabled: pager().noPrev }"><a><i class="icon-double-angle-left"></i></a></li>
+          <!-- ko foreach: pager().window -->
+          <li data-bind="css: { active: $data == pager().page() }"><a data-bind="click: changePage, text: $data"></a></li>
+          <!-- /ko -->
+          <li data-bind="click: function(data) { changePage(pager().next()) }, css: { disabled: pager().noNext }"><a><i class="icon-double-angle-right"></i></a></li>
+        </ul>
+      </div>
+     </td>
+    </tr>
+   </tfoot>
+  </table>
+ </div>
+</div>
+<script>
+$(function(){
+  $(document).ajaxStart(function() {
+    $("#loading").show(0);
+  }).ajaxComplete(function() {
+    $("#loading").hide(0)
+  });
+
+  var view = SearchViewModel();
+  ko.applyBindings(view);
+
+  // window.onpopstate = function(event) {
+  //   console.log(event);
+  // }
+
+});
+</script>
+}
