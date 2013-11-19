@@ -5,8 +5,8 @@
 @import helper.bootstrap.bootstrapField
 
 @main(Messages("user.edit")) {
-<div class="row-fluid">
- <div class="span6">
+<div class="row">
+ <div class="col-md-6">
   <h1>@Messages("user.edit")</h1>
   @helper.form(action = controllers.routes.User.update(id)) {
    <fieldset>
@@ -24,7 +24,7 @@
    </fieldset>
   }
  </div>
- <div class="span6">
+ <div class="col-md-6">
   <h1>@Messages("user.changepassword")</h1>
   @passForm.globalError.map { error =>
     <div class="alert alert-error">@Messages(error.message)</div>

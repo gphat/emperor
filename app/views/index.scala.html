@@ -5,8 +5,8 @@
 @import views.html.util._
 
 @main(Messages("general.timeline")) {
-<div class="row-fluid">
- <div class="span2">
+<div class="row">
+ <div class="col-md-2">
   <ul class="nav nav-list well well-small search-well">
     <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
     <span data-bind="visible: events().items().length == 0">@Messages("search.facet.none")</span>
@@ -26,7 +26,7 @@
    </div>
   </div>
  </div>
- <div class="span10">
+ <div class="col-md-10">
  <h1>@Messages("general.timeline")</h1>
   <div class="alert alert-info" data-bind="visible: events().total() == 0">@Messages("general.timeline.empty")</div>
   <div data-bind="if: events().total() > 0">
@@ -42,8 +42,8 @@
     </li>
    </ul>
    <span data-bind="i18nText: [ 'pager_summary', { 'start': events().first(), 'finish': events().last(), 'total': events().total() } ]"></span>
-   <div class="pagination pull-right">
-    <ul>
+   <div class="pull-right">
+    <ul class="pagination">
      <li data-bind="click: function(data) { changePage(events().prev()) }"><a><i class="icon-double-angle-left"></i></a></li>
      <!-- ko foreach: events().window -->
      <li data-bind="css: { active: $data == events().page() }"><a data-bind="click: changePage, text: $data"></a></li>

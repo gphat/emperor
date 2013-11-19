@@ -4,8 +4,8 @@
 @import views.html.util._
 
 @main(title = Messages("user.with.id", user.realName)) {
-<div class="row-fluid">
- <div class="span3">
+<div class="row">
+ <div class="col-md-3">
   <div class="bigprofile">
    @gravatar(user.id.get, 80)
    <h2>@Messages(user.realName)</h2>
@@ -21,11 +21,11 @@
    }
   </div>
  </div>
- <div class="span6">
+ <div class="col-md-6">
   <h2>@Messages("general.timeline")</h2>
   
  </div>
- <div class="span3">
+ <div class="col-md-3">
  </div>
 </div>
 }

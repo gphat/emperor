@@ -9,8 +9,8 @@
 @Messages("pager.empty")
 } else {
 <span class="summ">@Messages("pager.summary", page.offset + 1, page.offset + page.items.size, page.total)</span>
-<div class="pagination pull-right">
-  <ul>
+<div class="pull-right">
+  <ul class="pagination">
     @if(page.getWindow(10).head > page.range.start) {
     <li><a href="@Links.pagerLink(params = request.queryString, path = request.path, page = page.range.start, count = page.count)">&laquo;</a></li>
     }

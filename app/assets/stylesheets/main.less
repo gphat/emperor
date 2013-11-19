@@ -9,6 +9,7 @@
 body, html {
   background-color: @body-color-bg;
   color: @card-color-fg;
+  padding-top: 2.5em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -17,7 +18,7 @@ h1, h2, h3, h4, h5, h6 {
 
 table {
   tfoot {
-    div.pagination {
+    ul.pagination {
       margin: 0;
     }
   }
@@ -55,20 +56,13 @@ table {
 
 .navbar {
   border-radius: 0px;
-  .navbar-inner {
-    background: none;
-    background-color: #fff;
-    border-radius: 0;
-    border: none;
-    color: #453a2c;
 
-    .brand {
-      font-weight: bold;
-      text-shadow: none;      
-    }
-    a.brand:hover {
-      color: #222;
-    }
+  .brand {
+    font-weight: bold;
+    text-shadow: none;      
+  }
+  a.brand:hover {
+    color: #222;
   }
 
   .nav > li > a {

@@ -12,7 +12,7 @@
 @Option(page.items).filterNot(_.isEmpty).map { projects =>
 <ul class="thumbnails">
   @projects.map { project =>
-  <li class="span4">
+  <li class="col-md-4">
    <div class="thumbnail">
     <h3><a href="@controllers.routes.Project.item(project.id.get)">@project.name</a></h3>
    </div>

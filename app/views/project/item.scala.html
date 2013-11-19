@@ -10,8 +10,8 @@
  <strong>@Messages("help.projecthome.title")</strong> @Html(Messages("help.projecthome.blurb"))
 </div>
 <h1><a class="btn" href="@controllers.routes.Project.edit(project.id.get)"><i class="icon-edit"></i></a> @Messages("project.with.id", project.name)</h1>
-<div class="row-fluid">
- <div class="span3">
+<div class="row">
+ <div class="col-md-3">
    <ul class="well well-small nav nav-list">
     <li class="nav-header">@Messages("project.summary.links")</li>
     <li><a href="@routes.Board.index(project.id.get)">@Messages("project.summary.link.kanban")</a></li>
@@ -29,7 +29,7 @@
     </div>
    </div>
  </div>
- <div class="span6">
+ <div class="col-md-9">
   <h2>@Messages("general.timeline")</h2>
   <div data-bind="if: events().total < 1"><div class="alert alert-info">@Messages("general.timeline.empty")</div></div>
   <div data-bind="if: events().total() > 0">
@@ -45,8 +45,8 @@
     </li>
    </ul>
    <span data-bind="i18nText: [ 'pager_summary', { 'start': events().first(), 'finish': events().last(), 'total': events().total() } ]"></span>
-   <div class="pagination pull-right">
-    <ul>
+   <div class="pull-right">
+    <ul class="pagination">
      <li data-bind="click: function(data) { changePage(events().prev()) }"><a><i class="icon-double-angle-left"></i></a></li>
      <!-- ko foreach: events().window -->
      <li data-bind="css: { active: $data == events().page() }"><a data-bind="click: changePage, text: $data"></a></li>

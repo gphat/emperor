@@ -4,8 +4,8 @@
 @import views.html.util._
 
 @main(Messages("search.results")) {
-<div class="row-fluid">
- <div class="span2">
+<div class="row">
+ <div class="col-md-2">
   <ul class="nav nav-list well well-small search-well">
     <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
     <span data-bind="visible: pager().items().length == 0">@Messages("search.facet.none")</span>
@@ -25,7 +25,7 @@
    </div>
   </div>
  </div>
- <div class="span10">
+ <div class="col-md-10">
   <div data-bind="visible: pager().items().length == 0" class="alert alert-warning">@Messages("search.results.none")</div>
   <table class="table table-bordered table-hover table-rounded table-striped ticket-search" data-bind="visible: pager().items().length > 0">
    <thead>
@@ -50,8 +50,8 @@
     <tr>
      <td colspan="7">
       <span data-bind="i18nText: [ 'pager_summary', { 'start': pager().first(), 'finish': pager().last(), 'total': pager().total() } ]"></span>
-      <div class="pagination pull-right">
-        <ul>
+      <div class="pull-right">
+        <ul class="pagination">
           <li data-bind="click: function(data) { changePage(pager().prev()) }, css: { disabled: pager().noPrev }"><a><i class="icon-double-angle-left"></i></a></li>
           <!-- ko foreach: pager().window -->
           <li data-bind="css: { active: $data == pager().page() }"><a data-bind="click: changePage, text: $data"></a></li>
