@@ -70,13 +70,17 @@ INSERT INTO ticket_types (name, color) VALUES ('TICK_TYPE_MILESTONE', '44af7b');
 CREATE TABLE ticket_link_types (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
-    invertable BOOLEAN DEFAULT true,
+    inverse INT REFERENCES ticket_link_types(id),
     date_created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO ticket_link_types (name, invertable) VALUES ('TICK_LINK_BLOCKS', true);
-INSERT INTO ticket_link_types (name, invertable) VALUES ('TICK_LINK_CONTAINS', true);
-INSERT INTO ticket_link_types (name, invertable) VALUES ('TICK_LINK_RELATED', false);
+INSERT INTO ticket_link_types (name) VALUES ('TICK_LINK_BLOCKS');
+INSERT INTO ticket_link_types (name) VALUES ('TICK_LINK_CONTAINS');
+INSERT INTO ticket_link_types (name) VALUES ('TICK_LINK_RELATED');
+INSERT INTO ticket_link_types (name, inverse) VALUES ('TICK_LINK_BLOCKED_BY', 1);
+INSERT INTO ticket_link_types (name, inverse) VALUES ('TICK_LINK_CONTAINED_IN', 2);
+UPDATE ticket_link_types SET inverse=4 WHERE id=1;
+UPDATE ticket_link_types SET inverse=5 WHERE id=2;
 
 CREATE TABLE ticket_severities (
     id SERIAL PRIMARY KEY,
