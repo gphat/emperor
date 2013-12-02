@@ -14,7 +14,7 @@
    <input type="text" name="query" class="search-query span2" placeholder="@Messages("search.placeholder")">
   </div
   <div class="form-group">
-   <span class="add-on"><i class="icon-search"></i></span>
+   <span class="add-on"><i class="fa fa-search"></i></span>
   </div>
  }
  <ul class="nav pull-right">
@@ -23,11 +23,11 @@
   } else {
    <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-     @request.user.username <i class="icon-caret-down"></i>
+     @request.user.username <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu">
-     <li><a href="@controllers.routes.User.edit(request.user.id.get)" target="_self"><i class="icon-user"></i> @Messages("user.account")</a></li>
-     <li><a href="@routes.Auth.logout" target="_self"><i class="icon-signout"></i> @Messages("auth.logout")</a></li>
+     <li><a href="@controllers.routes.User.edit(request.user.id.get)" target="_self"><i class="fa fa-user"></i> @Messages("user.account")</a></li>
+     <li><a href="@routes.Auth.logout" target="_self"><i class="fa fa-signout"></i> @Messages("auth.logout")</a></li>
     </ul>
    </li>
   }

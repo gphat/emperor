@@ -14,8 +14,8 @@
   @helper.select(field = objForm("default_severity_id"), options = severities, args = '_label -> Messages("project.default.severity"))
   @helper.select(field = objForm("default_type_id"), options = ttypes, args = '_label -> Messages("project.default.ttype"))
   <div class="form-actions">
-   <a href="@controllers.routes.Project.index()" class="btn"><i class="icon-remove"></i> @Messages("form.cancel")</a>
-   <button type="submit" class="btn btn-primary"><i class="icon-check"></i> @Messages("form.submit")</button>
+   <a href="@controllers.routes.Project.index()" class="btn"><i class="fa fa-minus-circle"></i> @Messages("form.cancel")</a>
+   <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> @Messages("form.submit")</button>
   </div>
  </fieldset>
 }

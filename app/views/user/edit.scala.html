@@ -19,7 +19,7 @@
     @helper.inputText(objForm("url"), '_label -> Messages("user.url"))
     @helper.inputText(objForm("title"), '_label -> Messages("user.title"))
     <div class="form-actions">
-     <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
+     <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> @Messages("form.submit")</button>
     </div>
    </fieldset>
   }
@@ -35,11 +35,11 @@
     @helper.inputPassword(passForm("password2"), '_label -> Messages("user.password.confirm"))
    </fieldset>
    <div class="form-actions">
-    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> @Messages("form.submit")</button>
    </div>
   }
   <div class="btn-group btn-group-above-table pull-right">
-   <a class="btn" data-toggle="modal" href="#token"><i class="icon-plus"></i> @Messages("user.token.add")</a>
+   <a class="btn" data-toggle="modal" href="#token"><i class="fa fa-plus"></i> @Messages("user.token.add")</a>
   </div>
   <h1>@Messages("user.token.list")</h1>
   <p data-bind="visible: tokens().length < 1">@Messages("user.token.none")</p>
@@ -80,7 +80,7 @@
  </div>
  <div class="modal-footer">
   <a href="#" class="btn" data-dismiss="modal">@Messages("form.cancel")</a>
-  <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
+  <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> @Messages("form.submit")</button>
  </div>
  }
 </div>

@@ -17,16 +17,16 @@
      @defining(event.eType) { etype =>
       @etype match {
        case "commit" => {
-        <a href="@event.url"><i class="icon-cogs"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("commits", event.eKey)">@event.eKey</a>
+        <a href="@event.url"><i class="fa fa-cogs"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("commits", event.eKey)">@event.eKey</a>
        }
        case "comment" => {
-        <a href="@event.url"><i class="icon-comments"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
+        <a href="@event.url"><i class="fa fa-comments"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
        }
        case "ticket_change" => {
-        <a href="@event.url"><i class="icon-edit"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
+        <a href="@event.url"><i class="fa fa-edit"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
        }
        case "ticket_create" => {
-        <a href="@event.url"><i class="icon-certificate"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
+        <a href="@event.url"><i class="fa fa-certificate"></i></a> @Html(Messages("event.action", event.userId, Messages(event.userRealName), Messages("event.action." + event.eType))) <a href="@controllers.routes.Ticket.item("comments", event.eKey)">@event.eKey</a>
        }
        case _ => { @etype }
       }

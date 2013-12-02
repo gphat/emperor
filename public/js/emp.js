@@ -170,13 +170,13 @@ function Event(data) {
   this.iconClass      = ko.computed(function() {
     switch(this.eType()) {
       case 'EVENT_TYPE_TICKET_COMMIT':
-        return 'icon-cogs';
+        return 'fa fa-cogs';
       case 'EVENT_TYPE_TICKET_CHANGE':
-        return 'icon-edit';
+        return 'fa fa-edit';
       case 'EVENT_TYPE_TICKET_CREATE':
-        return 'icon-certificate';
+        return 'fa fa-certificate';
       default:
-        return 'icon-comments';
+        return 'fa fa-comments';
     }
   }, this);
 }

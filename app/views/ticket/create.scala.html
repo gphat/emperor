@@ -26,7 +26,7 @@
   @helper.bootstrap.select(field = objForm("priorityId"), dataBind = "options: priorities(), value: chosenPriority, optionsText: 'nameI18N', optionsValue: 'id'", args = '_label -> Messages("ticket.priority"))
   @helper.bootstrap.select(field = objForm("severityId"), dataBind = "options: severities(), value: chosenSeverity, optionsText: 'nameI18N', optionsValue: 'id'", args = '_label -> Messages("ticket.severity"))
   <div class="form-actions">
-   <button type="submit" data-bind="enable: hasProject()" class="btn btn-primary"><i class="icon-check"></i> @Messages("form.submit")</button>
+   <button type="submit" data-bind="enable: hasProject()" class="btn btn-primary"><i class="fa fa-check"></i> @Messages("form.submit")</button>
   </div>
  </fieldset>
 }

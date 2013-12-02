@@ -15,11 +15,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 
     <!--[if lt IE 9]>
       <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -41,28 +41,24 @@
 
   <body>
 
-    <div class="navbar navbar-inverse">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="fa fa-minus"></span>
             <span class="fa fa-minus"></span>
             <span class="fa fa-minus"></span>
-          </a>
-          <a class="brand" href="@routes.Core.index()">Emperor</a>
-        </div>
+          </button>
+          <a class="navbar-brand" href="@routes.Core.index()">Emperor</a>
+        </div>     
       </div>
     </div>
-    <div class="container-fluid main-body">
+    <div class="container">
      @content
     </div>
     <footer>
 	    @Html(Messages("app.footer.blurb", emp.BuildInfo.version))
-	    <div class="pull-right">
-       Placeholder
-	    </div>
-   </footer>
-
     </footer>
   </body>
 </html>

@@ -5,7 +5,7 @@
 @import play.api.libs.json.Json
 
 @main(currentProject = Some(project.id.get), title = Messages("general.board")) {
-<a id="helper" class="btn btn-mini btn-success"><i class="icon-question-sign"></i></a>
+<a id="helper" class="btn btn-mini btn-success"><i class="fa fa-question"></i></a>
 <div id="help" class="alert alert-info" style="display: none">
  <button id="helpcloser" type="button" class="close">&times;</button>
  <strong>@Messages("help.kanban.title")</strong> @Html(Messages("help.kanban.blurb"))
@@ -13,11 +13,11 @@
 <h1>@Messages("board.title", project.name)</h1>
 <div class="row">
  <div class="col-md-2">
-  <ul class="nav nav-list well well-small search-well">
-    <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
+  <ul class="nav nav-list well well-sm search-well">
+    <li class="head"><i class="fa fa-filter"></i> @Messages("search.facet.filters")</li>
     <span data-bind="visible: pager().items().length == 0">@Messages("search.facet.none")</span>
     <!-- ko foreach: filters -->
-    <li class="filter"><a id="help" data-bind="click: removeFilter" style="text-align: left" class="btn btn-mini btn-danger"><span data-bind="i18nText: [ 'filter_link_name', { 'name': name(), 'value': i18n.t(valueI18N()) } ]"></span><i class="icon-remove pull-right"></i></a></li>
+    <li class="filter"><a id="help" data-bind="click: removeFilter" style="text-align: left" class="btn btn-mini btn-danger"><span data-bind="i18nText: [ 'filter_link_name', { 'name': name(), 'value': i18n.t(valueI18N()) } ]"></span><i class="fa fa-minus pull-right"></i></a></li>
     <!-- /ko -->
     <!-- ko foreach: pager().facetCollection -->
     <li class="nav-header" data-bind="text: nameI18N"><li>
