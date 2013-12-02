@@ -11,7 +11,7 @@
  <li class="active">@Messages("admin.user.list")</li>
 </ul>
 <div class="btn-group btn-group-above-table pull-right">
- <a href="@controllers.admin.routes.User.create" class="btn"><i class="icon-plus-sign"></i> @Messages("admin.user.add")</a>
+ <a href="@controllers.admin.routes.User.create" class="btn"><i class="fa fa-plus-circle"></i> @Messages("admin.user.add")</a>
 </div>
 <h1>@Messages("admin.user.list")</h1>
 @Option(page.items).filterNot(_.isEmpty).map { users =>

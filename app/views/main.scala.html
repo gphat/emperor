@@ -17,7 +17,6 @@
     <meta name="author" content="">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-modal.css")">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -34,14 +33,14 @@
   </head>
 
   <body>
-    <div class="navbar navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+            <span class="fa fa-minus"></span>
+            <span class="fa fa-minus"></span>
+            <span class="fa fa-minus"></span>
           </button>
           <a class="navbar-brand" href="@routes.Core.index()">Emperor</a>
         </div>     
@@ -90,9 +89,7 @@
     @Html(Messages("app.footer.blurb", emp.BuildInfo.version))
     <div class="pull-right">
     <a href="http://emperorapp.com/docs" target="_blank">@Messages("general.documentation")</a>
-    <i class="icon-ellipsis-vertical"></i>
-    <!-- A link to launch the Classic Widget -->
-    <a href="javascript:void(0)" data-uv-lightbox="classic_widget" data-uv-mode="full" data-uv-primary-color="#1abc9c" data-uv-link-color="#34495e" data-uv-default-mode="feedback" data-uv-forum-id="212933">@Html(Messages("general.support"))</a>
+    <i class="fa fa-ellipsis-v"></i>
     </div>
    </footer>
    <script src="@routes.Assets.at("js/emp.js")"></script>
@@ -103,7 +100,5 @@
      {{message}}
     </div>
    </script>
-   <!-- UserVoice JavaScript SDK (only needed once on a page) -->
-   <script>(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/k2vsMPS6yFIY0fUsksUaQ.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})()</script>
   </body>
 </html>

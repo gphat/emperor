@@ -3,7 +3,7 @@
 @import models.TicketModel
 @main(Messages("project.list")) {
 <div class="btn-group btn-group-above-table pull-right">
- <a href="@controllers.routes.Project.create" class="btn"><i class="icon-plus-sign"></i> @Messages("project.add")</a>
+ <a href="@controllers.routes.Project.create" class="btn"><i class="fa fa-plus-circle"></i> @Messages("project.add")</a>
 </div>
 <h1>@Messages("project.list")</h1>
 @if(page.items.isEmpty) {

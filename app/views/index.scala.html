@@ -8,10 +8,10 @@
 <div class="row">
  <div class="col-md-2">
   <ul class="nav nav-list well well-small search-well">
-    <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
+    <li class="head"><i class="fa fa-filter"></i> @Messages("search.facet.filters")</li>
     <span data-bind="visible: events().items().length == 0">@Messages("search.facet.none")</span>
     <!-- ko foreach: filters -->
-    <li class="filter"><a data-bind="click: removeFilter" class="btn btn-mini btn-danger"><span data-bind="i18nText: [ 'filter_link_name', { 'name': name(), 'value': i18n.t(value()) } ]"></span><i class="pull-right icon-remove"></i></a></li>
+    <li class="filter"><a data-bind="click: removeFilter" class="btn btn-mini btn-danger"><span data-bind="i18nText: [ 'filter_link_name', { 'name': name(), 'value': i18n.t(value()) } ]"></span><i class="pull-right fa fa-minus-circle"></i></a></li>
     <!-- /ko -->
     <!-- ko foreach: events().facetCollection -->
     <li class="nav-header" data-bind="text: nameI18N"><li>
@@ -44,11 +44,11 @@
    <span data-bind="i18nText: [ 'pager_summary', { 'start': events().first(), 'finish': events().last(), 'total': events().total() } ]"></span>
    <div class="pull-right">
     <ul class="pagination">
-     <li data-bind="click: function(data) { changePage(events().prev()) }"><a><i class="icon-double-angle-left"></i></a></li>
+     <li data-bind="click: function(data) { changePage(events().prev()) }"><a><i class="fa fa-double-angle-left"></i></a></li>
      <!-- ko foreach: events().window -->
      <li data-bind="css: { active: $data == events().page() }"><a data-bind="click: changePage, text: $data"></a></li>
      <!-- /ko -->
-     <li data-bind="click: function(data) { changePage(events().next()) }"><a><i class="icon-double-angle-right"></i></a></li>
+     <li data-bind="click: function(data) { changePage(events().next()) }"><a><i class="fa fa-double-angle-right"></i></a></li>
     </ul>
    </div>
   </div>
