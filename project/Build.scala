@@ -12,13 +12,14 @@ object ApplicationBuild extends Build {
     jdbc,
     cache,
     anorm,
-    "org.specs2"    %% "specs2"                 % "2.2.2"           % "test",
+    "org.specs2"    %% "specs2"                 % "2.3.10"           % "test",
     "org.mindrot"   % "jbcrypt"                 % "0.3m",
     "javax.mail"    % "mail"                    % "1.4.1",
     "org.apache.commons" % "commons-email"      % "1.2",
     "joda-time"     % "joda-time"               % "2.3",
     "wabisabi"      %% "wabisabi"               % "2.0.8",
-    "org.pegdown"   % "pegdown"                 % "1.4.1"
+    "org.pegdown"   % "pegdown"                 % "1.4.2",
+    "org.postgresql"% "postgresql"              % "9.3-1100-jdbc41"
   )
 
   scalacOptions ++= Seq(
@@ -28,7 +29,7 @@ object ApplicationBuild extends Build {
 
   val main = play.Project(appName, appVersion, appDependencies, settings = playScalaSettings ++ buildInfoSettings).settings(
     // Add your own project settings here
-    scalaVersion := "2.10.2"
+    scalaVersion := "2.10.4"
   ).settings(
     resolvers += "gphat" at "https://raw.github.com/gphat/mvn-repo/master/releases/",
     resolvers += "teamon.eu repo" at "http://repo.teamon.eu",
