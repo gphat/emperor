@@ -94,13 +94,13 @@ object Search {
       })
     }).toSeq
 
-    val qq = if(query.query == "*") {
+    val q = if(query.query.isEmpty) "*" else query.query
+    val qq = if(q == "*") {
       // No reason to do anything fancy for a query for "everything",
       // so we'll use a match all. phrase_prefix doesn't work without
       // something, so this is required, not just an optimization
       Json.obj("match_all" -> Json.obj())
     } else {
-      val q = if(query.query.isEmpty) "*" else query.query
       Json.obj(
         // Use a combination of a text and query string parser to get everything!
         "bool" -> Json.obj(
