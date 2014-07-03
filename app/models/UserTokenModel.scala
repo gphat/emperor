@@ -64,7 +64,7 @@ object UserTokenModel {
       maybeT.map({ t =>
         deleteQuery.on(
           'user_id  -> t.userId,
-          'token    -> t.token
+          'token    -> t.token.get
         ).execute
       })
       maybeT

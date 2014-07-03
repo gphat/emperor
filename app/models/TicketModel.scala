@@ -516,7 +516,7 @@ object TicketModel {
               'assignee_id  -> assigneeId,
               'attention_id -> attentionId,
               'severity_id  -> severityId,
-              'status_id    -> status.id,
+              'status_id    -> status.id.get,
               'type_id      -> typeId,
               'position     -> position,
               'description  -> description,
@@ -834,9 +834,10 @@ object TicketModel {
     // be leaving the resolution alone OR setting it to None.  To disambiguate
     // we use the clearResolution boolean.  If that is true then we will
     // set newResId to None (regladless of what resolutionId we might've gotten).
-    val newResId = clearResolution match {
+    val oldResId: Option[Long] = oldTicket.resolution.id
+    val newResId: Option[Long] = clearResolution match {
       case true   => None
-      case false  => resolutionId.getOrElse(oldTicket.resolution.id)
+      case false  => Some(resolutionId.getOrElse(oldResId.get))
     }
 
     val changed = if(oldTicket.priority.id != ticket.priorityId) {
