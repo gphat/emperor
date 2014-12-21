@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
   "joda-time"     % "joda-time"               % "2.6",
   "wabisabi"      %% "wabisabi"               % "2.0.11",
   "org.pegdown"   % "pegdown"                 % "1.4.2",
-  "org.postgresql"% "postgresql"              % "9.3-1102-jdbc41"
+  "org.postgresql"% "postgresql"              % "9.3-1102-jdbc41",
+  "com.adrianhurt"%% "play-bootstrap3"        % "0.3"
 )
 
 resolvers += "gphat" at "https://raw.github.com/gphat/mvn-repo/master/releases/"

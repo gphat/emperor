@@ -1,7 +1,6 @@
 @(objForm: Form[LoginUser], redirectUrl: String)(implicit request: Request[AnyContent])
 
-@import helper._
-@import helper.bootstrap.bootstrapField
+@import b3.vertical.fieldConstructor
 
 @bare(Messages("auth.login")) {
 <div class="signin">
@@ -16,16 +15,14 @@
       @Messages(error.message)
     </div>
   }
-  @helper.form(action = controllers.routes.Auth.doLogin(redirectUrl)) {
+  @b3.form(action = controllers.routes.Auth.doLogin(redirectUrl)) {
    <fieldset>
     <div class="inputs">
-    @helper.input(objForm("username"), 'hideLabel -> "", 'class -> "input-xlarge") { (id, name, value, args) =>
-    <input type="email" name="@name" value="@value" id="@id" @toHtmlArgs(args) placeholder="@Messages("general.email")">
-    }
-    @helper.inputPassword(objForm("password"), 'class -> "input-xlarge", 'placeholder -> Messages("general.password"), 'hideLabel -> "")
+    @b3.email(objForm("username"), '_error -> true, '_label -> Messages("general.username"), '_class -> "input-xlarge", 'placeholder -> Messages("general.email"), '_showIconOnError -> true)
+    @b3.password(objForm("password"), '_label -> Messages("general.password"), '_class -> "input-xlarge", 'placeholder -> Messages("general.password"), '_showIconOnError -> true)
     </div>
     <div class="form-actions">
-     <button type="submit" class="btn btn-primary"><i class="icon-signin"></i> @Messages("auth.login")</button>
+     <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> @Messages("auth.login")</button>
      <a class="pull-right" href="@controllers.routes.Auth.forgot">@Messages("auth.forgot")</a>
     </div>
    </fieldset>
