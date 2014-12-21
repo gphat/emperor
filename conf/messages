@@ -14,7 +14,7 @@ admin.user.with.id=User {0}
 
 api.unknown.entity=Unknown Entity
 
-app.footer.blurb=This is <a href="http://emperorapp.com">Emperor</a> version {0}. Copyright &copy; 2012 - 2013 Cory Watson
+app.footer.blurb=This is <a href="http://emperorapp.com">Emperor</a> version {0}. Copyright &copy; 2012 - 2014 Cory Watson
 
 auth.login=Login
 auth.failure=Login failed.
@@ -80,7 +80,7 @@ help.home.blurb=This is Emperor's home screen. Here you will find a timeline of 
 help.kanban.title=Status Board
 help.kanban.blurb=The status, or Kanban, board is <a href="http://en.wikipedia.org/wiki/Kanban">a concept borrowed from manufacturing</a> and has become a tool for some Agile methodologies. Statuses are represented as columns, going from left to right as tasks get closer to completion. The leftmost column, <em>New</em>, is your <strong>Backlog</strong>. Items in other columns are considered <strong>In Progress</strong>. Aside from representing completeness the columns depth can also indicate when <strong>too many</strong> tasks are in progress as once. The status board is a succinct and easy to understand representation of work to be completed. Use the filters on the left to explore facets of the tickets in your board.
 help.projecthome.title=Project Screen
-help.projecthome.blurb=This is the detail screen for a specific project. Here you will find quick links on the left, a timeline of events within the project in the center and details about the project's owner on the right. 
+help.projecthome.blurb=This is the detail screen for a specific project. Here you will find quick links on the left, a timeline of events within the project in the center and details about the project's owner on the right.
 
 error.header=This is Embarassing
 error.blurb=There''s been an error. We''ve logged the error and will take a look. Please use the Support link at the bottom of the page if you need assistance.

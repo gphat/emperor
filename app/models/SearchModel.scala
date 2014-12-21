@@ -265,7 +265,7 @@ object SearchModel {
   )
   val ticketCommentMapping = """
   {
-    "ticket": {
+    "ticket_comment": {
       "properties": {
         "type": {
           "type": "string",
@@ -529,7 +529,7 @@ object SearchModel {
    */
   def reIndex = {
 
-    Stats.addEvent("reindexes", Map("foo" -> "bar"))    
+    Stats.addEvent("reindexes", Map("foo" -> "bar"))
     // Get the number of the next index.
     val newIndexNum = DB.withConnection { implicit conn =>
       getNextIndexQuery.as(scalar[Long].single)
@@ -563,6 +563,7 @@ object SearchModel {
               } recover {
                 case x: Throwable => {
                   Logger.error(s"Failed to create index: $name")
+                  x.printStackTrace
                   // Rethrow!
                   throw x
                 }
@@ -622,8 +623,8 @@ object SearchModel {
       val oldName = iname + "_" + oldIndexNum.toString
       val newName = iname + "_" + newIndexNum.toString
       Logger.debug(s"Aliasing $iname -read to $newName")
-      esClient.createAlias(actions = """{ "remove": { "index": """" + oldName + """", "alias": """" + iname + """-read" }}, { "add": { "index": """" + newName  + """", "alias": """" + iname + """-read" }}""")      
-      esClient.deleteIndex(oldName)
+      Await.result(esClient.createAlias(actions = """{ "remove": { "index": """" + oldName + """", "alias": """" + iname + """-read" }}, { "add": { "index": """" + newName  + """", "alias": """" + iname + """-read" }}"""), Duration(5, "seconds"))
+      Await.result(esClient.deleteIndex(oldName), Duration(5, "seconds"))
     })
 
     Thread.sleep(1000) // Pause a second to let ES catch up
