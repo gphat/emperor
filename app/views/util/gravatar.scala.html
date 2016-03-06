@@ -1,7 +1,7 @@
 @**
  * Generate a gravatar img tag.
  *@
-@(userId: Long, size: Int = 64)(implicit request: Request[AnyContent])
+@(userId: Long, size: Int = 64)(implicit request: Request[AnyContent], messages: Messages)
 
 @import org.apache.commons.codec.digest.DigestUtils
 @import models.UserModel

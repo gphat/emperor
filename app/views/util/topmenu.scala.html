@@ -1,7 +1,7 @@
 @**
  * Generate the top menu.
  *@
-@(currentProject: Option[Long] = None)(implicit request: AuthenticatedRequest)
+@(currentProject: Option[Long] = None)(implicit request: AuthenticatedRequest, messages: Messages)
 
 <ul class="nav">
  <li @if(request.path.startsWith("/ticket/create")) { class="active" }><a href="@controllers.routes.Ticket.create(project = currentProject)" target="_self">@Messages("ticket.add")</a></li>

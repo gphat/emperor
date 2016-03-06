@@ -2,7 +2,7 @@
   ticketJson: play.api.libs.json.JsValue,
   assignees: List[(String,String)],
   assignForm: Form[models.Assignment]
-)(implicit request: AuthenticatedRequest)
+)(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import emp.DateFormatter
 @import emp.text.Renderer

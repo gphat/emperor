@@ -9,12 +9,13 @@ import play.api._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.data.format.Formats._
+import play.api.i18n.{I18nSupport,MessagesApi}
 import play.api.libs.json.Json._
 import play.api.mvc._
 import play.api.Play.current
 import play.api.db._
 
-object User extends Controller with Secured {
+class User(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val newForm = Form(
     mapping(
@@ -64,7 +65,7 @@ object User extends Controller with Secured {
         dateCreated = new DateTime()
       )
 
-      Ok(views.html.admin.user.create(newForm.fill(defaultUser))(request))
+      Ok(views.html.admin.user.create(newForm.fill(defaultUser)))
     } else {
       Redirect(controllers.admin.routes.User.index()).flashing("error" -> "admin.billing.user.limit")
     }
@@ -76,6 +77,6 @@ object User extends Controller with Secured {
      page = page, count = count
     )
 
-    Ok(views.html.admin.user.index(users)(request))
+    Ok(views.html.admin.user.index(users))
   }
 }

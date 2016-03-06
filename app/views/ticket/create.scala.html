@@ -5,7 +5,7 @@
   priorities: String,
   severities: String,
   project: String
-)(implicit request: AuthenticatedRequest)
+)(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import emp.JsonFormats._
 @import helper._

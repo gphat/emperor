@@ -691,7 +691,7 @@ object SearchModel {
     Try({ Await.result(res, Duration(1, "seconds")).getResponseBody }).map({ response =>
 
       val jres = Json.parse(response)
-      val total = (jres \ "hits" \ "total").as[Option[Int]].getOrElse(0)
+      val total = (jres \ "hits" \ "total").asOpt[Int].getOrElse(0)
       val hits = (jres \ "hits" \ "hits" \\ "_source").map({ h => Json.fromJson[models.Comment](h).asOpt.get })
 
       val pager = Page(hits, query.page, query.count, total)
@@ -716,7 +716,7 @@ object SearchModel {
     Try({ Await.result(res, Duration(1, "seconds")).getResponseBody }).map({ response =>
 
       val jres = Json.parse(response)
-      val total = (jres \ "hits" \ "total").as[Option[Int]].getOrElse(0)
+      val total = (jres \ "hits" \ "total").asOpt[Int].getOrElse(0)
       val hits = (jres \ "hits" \ "hits" \\ "_source").map({ h => Json.fromJson[models.Event](h).asOpt.get })
 
       val pager = Page(hits, query.page, query.count, total)
@@ -741,7 +741,7 @@ object SearchModel {
 
     val attempt = Try({ Await.result(res, Duration(1, "seconds")).getResponseBody }).map({ response =>
       val jres = Json.parse(response)
-      val total = (jres \ "hits" \ "total").as[Option[Int]].getOrElse(0)
+      val total = (jres \ "hits" \ "total").asOpt[Int].getOrElse(0)
       val hits = (jres \ "hits" \ "hits" \\ "_source").map({ h => Json.fromJson[models.FullTicket](h).asOpt.get })
       val pager = Page(hits, query.page, query.count, total)
       emp.util.Search.parseSearchResponse(pager = pager, response = jres)

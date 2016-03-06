@@ -1,7 +1,7 @@
 @**
  * Main template for use by all of Emperor's pages.
  *@
-@(title: String, currentProject: Option[Long] = None)(content: Html)(implicit request: AuthenticatedRequest)
+@(title: String, currentProject: Option[Long] = None)(content: Html)(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import play.api.Play.current
 @import play.api.Play
@@ -54,7 +54,7 @@
       <div class="navbar-inner">
         <div class="container-fluid">
           <a class="brand" href="@routes.Core.index()">Emperor</a>
-          @topmenu(currentProject = currentProject)(request)
+          @topmenu(currentProject = currentProject)
         </div>
       </div>
     </div>

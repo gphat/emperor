@@ -6,7 +6,7 @@ import org.joda.time.DateTime
 import play.api._
 import play.api.data._
 import play.api.data.Forms._
-import play.api.i18n.{I18nSupport,Messages,MessagesApi}
+import play.api.i18n._
 import play.api.mvc._
 import play.api.mvc.Security._
 import play.api.db._
@@ -53,7 +53,7 @@ class User(val messagesApi: MessagesApi) extends Controller with I18nSupport wit
   def edit(userId: Long) = IsAuthenticated() { implicit request =>
     UserModel.getById(userId).map({ user =>
       if(request.user.id.get == userId || request.user.admin) {
-        Ok(views.html.user.edit(userId, editForm.fill(user), tokenForm, passwordForm)(request))
+        Ok(views.html.user.edit(userId, editForm.fill(user), tokenForm, passwordForm))
       } else {
         NotFound
       }
@@ -85,7 +85,7 @@ class User(val messagesApi: MessagesApi) extends Controller with I18nSupport wit
 
       val events = SearchModel.searchEvent(eventQuery)
 
-      Ok(views.html.user.item(user)(request))
+      Ok(views.html.user.item(user))
     }).getOrElse(NotFound)
   }
 

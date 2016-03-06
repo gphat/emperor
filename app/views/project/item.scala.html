@@ -1,4 +1,4 @@
-@(project: models.Project, projectJson: play.api.libs.json.JsValue, owner: Option[models.User])(implicit request: AuthenticatedRequest)
+@(project: models.Project, projectJson: play.api.libs.json.JsValue, owner: Option[models.User])(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import emp._
 @import views.html.util._

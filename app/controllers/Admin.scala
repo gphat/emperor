@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.Auth._
+// import controllers.Auth._
 import play.api._
 import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
@@ -17,7 +17,6 @@ class Admin(val messagesApi: MessagesApi) extends Controller with I18nSupport wi
   }
 
   def index = IsAuthenticated(admin = true) { implicit request =>
-
-    Ok(views.html.admin.index(request))
+    Ok(views.html.admin.index())
   }
 }

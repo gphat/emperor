@@ -13,7 +13,7 @@ class Board(val messagesApi: MessagesApi) extends Controller with I18nSupport wi
   def index(projectId: Long) = IsAuthenticated() { implicit request =>
     ProjectModel.getById(projectId).map({ project =>
       Stats.addEvent("boardsViewed", Map("projectId" -> projectId.toString))
-      Ok(views.html.board.index(project, WorkflowModel.getStatuses(project.workflowId, agile = false))(request))
+      Ok(views.html.board.index(project, WorkflowModel.getStatuses(project.workflowId, agile = false)))
     }).getOrElse(NotFound)
   }
 

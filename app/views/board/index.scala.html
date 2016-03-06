@@ -1,4 +1,4 @@
-@(project: models.Project, workflow: Seq[models.WorkflowStatus])(implicit request: AuthenticatedRequest)
+@(project: models.Project, workflow: Seq[models.WorkflowStatus])(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import emp.JsonFormats._
 @import emp.util.Links

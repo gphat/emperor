@@ -1,4 +1,4 @@
-@(implicit request: Request[AnyContent])
+@(implicit request: Request[AnyContent], messages: Messages)
 <div class="alert alert-block alert-error">
   <h4 class="alert-heading">@Messages("general.error")</h4>
   @Messages("ticket.statuschange.error")

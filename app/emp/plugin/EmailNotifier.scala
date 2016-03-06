@@ -7,7 +7,9 @@ import java.net.URL
 import models.{TicketModel,UserModel}
 import org.apache.commons.mail.HtmlEmail
 import play.api.Configuration
-import play.api.i18n.Messages
+import play.api.i18n.{DefaultLangs,Messages,MessagesApi}
+import play.api.Play.current
+import play.api.i18n.Messages.Implicits._
 
 class EmailNotifier(configuration: Configuration) extends Actor {
 
@@ -51,11 +53,15 @@ class EmailNotifier(configuration: Configuration) extends Actor {
           // XXX also for project owner or some other configurable list of project
           // watchers?
           ticket.assignee.id match {
-            case Some(userId) => Some(EmailResult(
-              subject = Messages("email.subject", Messages("email.ticket.new.subject", ticket.ticketId)),
-              recipient = UserModel.getById(userId).get,
-              body = views.html.email.notifier.ticket.newticket(ticket = ticket).body
-            ))
+            case Some(userId) => {
+              val user = UserModel.getById(userId).get
+              // implicit val mapi: MessagesApi = DefaultLangs.preferred(candidates: Seq[user.language])
+              Some(EmailResult(
+                subject = Messages("email.subject", Messages("email.ticket.new.subject", ticket.ticketId)),
+                recipient = user,
+                body = views.html.email.notifier.ticket.newticket(ticket = ticket).body
+              ))
+            }
             case None => None
           }
         }

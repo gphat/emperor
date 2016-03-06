@@ -1,4 +1,4 @@
-@(page: emp.util.Pagination.Page[models.Project])(implicit request: AuthenticatedRequest)
+@(page: emp.util.Pagination.Page[models.Project])(implicit request: AuthenticatedRequest, messages: Messages)
 @import views.html.util._
 @import models.TicketModel
 @main(Messages("project.list")) {

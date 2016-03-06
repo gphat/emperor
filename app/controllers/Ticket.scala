@@ -105,7 +105,7 @@ class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport w
 
     val pj: String = maybeProject.map({ p => Json.toJson(p).toString }).getOrElse("{}")
 
-    Ok(views.html.ticket.create(ticketForm, assignees, Json.toJson(projs).toString, ttypes, prios, sevs, pj)(request))
+    Ok(views.html.ticket.create(ticketForm, assignees, Json.toJson(projs).toString, ttypes, prios, sevs, pj))
   }
 
   def edit(ticketId: String) = IsAuthenticated() { implicit request =>
@@ -118,7 +118,7 @@ class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport w
       val sevs = TicketSeverityModel.getAll.map { x => (x.id.get.toString -> Messages(x.name)) }
       val assignees = UserModel.getAssignable().map { x => (x.id.getOrElse("").toString -> x.realName) }
       val users = UserModel.getAssignable(includeNobody = false).map { x => (x.id.getOrElse("").toString -> x.realName) }
-      Ok(views.html.ticket.edit(ticketId, ticketDataForm.fill(data.get), users, assignees, assignees, projs, ttypes, prios, sevs)(request))
+      Ok(views.html.ticket.edit(ticketId, ticketDataForm.fill(data.get), users, assignees, assignees, projs, ttypes, prios, sevs))
     }).getOrElse(NotFound((views.html.error.missing())))
   }
 

@@ -11,8 +11,10 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.mindrot.jbcrypt.BCrypt
 import play.api.cache.Cache
 import play.api.db.DB
-import play.api.i18n.Messages
+import play.api.i18n.{Lang,Messages}
+import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
+
 
 case class User(
   id: Pk[Long] = NotAssigned,
@@ -30,6 +32,7 @@ case class User(
 ) {
 
   def isAnonymous = username.equals("anonymous")
+  def language = Lang("en-US") // TODO
 }
 
 case class ForgotUser(username: String)

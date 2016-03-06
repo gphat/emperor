@@ -1,4 +1,13 @@
-@(id: String, objForm: Form[(TicketData)], users: List[(String,String)], assignees: List[(String,String)], attentions: List[(String,String)], projs: List[(String,String)], ttypes: List[(String,String)], priorities: List[(String,String)], severities: List[(String,String)])(implicit request: AuthenticatedRequest)
+@(
+  id: String, objForm: Form[(TicketData)],
+  users: List[(String,String)],
+  assignees: List[(String,String)],
+  attentions: List[(String,String)],
+  projs: List[(String,String)],
+  ttypes: List[(String,String)],
+  priorities: List[(String,String)],
+  severities: List[(String,String)]
+)(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import helper._
 @import helper.bootstrap.bootstrapField

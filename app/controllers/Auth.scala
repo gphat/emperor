@@ -5,12 +5,13 @@ import emp.util.Stats
 import play.api._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.i18n.{I18nSupport,MessagesApi}
 import play.api.Logger
 import play.api.mvc._
 import models._
 import org.mindrot.jbcrypt.BCrypt
 
-object Auth extends Controller {
+class Auth(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   val loginForm = Form(
     mapping(
@@ -45,12 +46,12 @@ object Auth extends Controller {
 
   def forgot = Action { implicit request =>
 
-    Ok(views.html.auth.forgot(forgotForm)(request))
+    Ok(views.html.auth.forgot(forgotForm))
   }
 
   def login(redirectUrl: String = "/") = Action { implicit request =>
 
-    Ok(views.html.auth.login(loginForm, redirectUrl)(request))
+    Ok(views.html.auth.login(loginForm, redirectUrl))
   }
 
   def logout = Action { implicit request =>
@@ -61,7 +62,7 @@ object Auth extends Controller {
   def reset(token: String) = Action { implicit request =>
 
     UserModel.getByForgotPassword(token).map({ user =>
-      Ok(views.html.auth.reset(resetForm, token)(request))
+      Ok(views.html.auth.reset(resetForm, token))
     }).getOrElse(
       Redirect(routes.Auth.login()).flashing("error" -> "auth.forgot.notfound")
     )
@@ -72,7 +73,7 @@ object Auth extends Controller {
 
     loginForm.bindFromRequest.fold(
       errors => {
-        BadRequest(views.html.auth.login(errors, redirectUrl)(request))
+        BadRequest(views.html.auth.login(errors, redirectUrl))
       }, {
         case loginUser => {
 
@@ -92,7 +93,7 @@ object Auth extends Controller {
   def doForgot = Action { implicit request =>
     forgotForm.bindFromRequest.fold(
       errors => {
-        BadRequest(views.html.auth.forgot(errors)(request))
+        BadRequest(views.html.auth.forgot(errors))
       }, {
         case forgotUser => {
           UserModel.getByUsername(forgotUser.username).map({ user =>
@@ -109,7 +110,7 @@ object Auth extends Controller {
     UserModel.getByForgotPassword(token).map({ user =>
       resetForm.bindFromRequest.fold(
         errors => {
-          BadRequest(views.html.auth.reset(errors, token)(request))
+          BadRequest(views.html.auth.reset(errors, token))
         }, {
           case np: models.NewPassword => {
             UserModel.updatePassword(user.id.get, np.password)

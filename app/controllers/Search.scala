@@ -20,7 +20,7 @@ class Search(val messagesApi: MessagesApi) extends Controller with I18nSupport w
     existingTicket.map({ t =>
       Redirect(routes.Ticket.item("comments", t.ticketId))
     }).getOrElse({
-      Ok(views.html.search.index(request))
+      Ok(views.html.search.index())
     })
   }
 }

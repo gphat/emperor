@@ -78,7 +78,7 @@ class Project(val messagesApi: MessagesApi) extends Controller with I18nSupport 
       val prios = TicketPriorityModel.getAll.map { x => (x.id.get.toString -> Messages(x.name)) }
       val sevs = TicketSeverityModel.getAll.map { x => (x.id.get.toString -> Messages(x.name)) }
       Stats.addEvent("createdProjects", Map("userId" -> request.user.id.toString))
-      Ok(views.html.project.create(addProjectForm, users, asses.toList, ttypes, prios, sevs)(request))
+      Ok(views.html.project.create(addProjectForm, users, asses.toList, ttypes, prios, sevs))
     } else {
       Redirect(routes.Project.index()).flashing("error" -> "admin.billing.project.limit")
     }
@@ -90,7 +90,7 @@ class Project(val messagesApi: MessagesApi) extends Controller with I18nSupport 
 
     val projs = ProjectModel.list(page = page, count = count)
 
-    Ok(views.html.project.index(projs)(request))
+    Ok(views.html.project.index(projs))
   }
 
   def edit(projectId: Long) = IsAuthenticated(admin = true) { implicit request =>
@@ -105,7 +105,7 @@ class Project(val messagesApi: MessagesApi) extends Controller with I18nSupport 
 
     maybeProject match {
       case Some(project) => {
-        Ok(views.html.project.edit(projectId, editProjectForm.fill(project), users, asses.toList, ttypes, prios, sevs)(request))
+        Ok(views.html.project.edit(projectId, editProjectForm.fill(project), users, asses.toList, ttypes, prios, sevs))
       }
       case None => NotFound(views.html.error.missing())
     }
@@ -120,7 +120,7 @@ class Project(val messagesApi: MessagesApi) extends Controller with I18nSupport 
 
       val owner = project.ownerId.map({ userId => UserModel.getById(userId) }).getOrElse(None)
 
-      Ok(views.html.project.item(project, Json.toJson(project), owner)(request))
+      Ok(views.html.project.item(project, Json.toJson(project), owner))
     }).getOrElse(NotFound(views.html.error.missing()))
   }
 

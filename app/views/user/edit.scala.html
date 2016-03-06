@@ -1,4 +1,4 @@
-@(id: Long, objForm: Form[(models.User)], tokenForm: Form[models.UserToken], passForm: Form[(NewPassword)])(implicit request: AuthenticatedRequest)
+@(id: Long, objForm: Form[(models.User)], tokenForm: Form[models.UserToken], passForm: Form[(NewPassword)])(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import emp.DateFormatter
 @import helper._

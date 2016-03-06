@@ -1,4 +1,12 @@
-@(id: Long, objForm: Form[(models.Project)], users: List[(String,String)], asses: List[(String,String)], ttypes: List[(String,String)], priorities: List[(String,String)], severities: List[(String,String)])(implicit request: AuthenticatedRequest)
+@(
+  id: Long,
+  objForm: Form[(models.Project)],
+  users: List[(String,String)],
+  asses: List[(String,String)],
+  ttypes: List[(String,String)],
+  priorities: List[(String,String)],
+  severities: List[(String,String)]
+)(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import helper._
 @import helper.bootstrap.bootstrapField

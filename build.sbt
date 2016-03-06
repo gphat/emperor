@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   evolutions,
   cache,
   ws,
+  specs2 % Test,
   "org.specs2"    %% "specs2"                 % "2.4.15"           % "test",
   "org.mindrot"   % "jbcrypt"                 % "0.3m",
   "javax.mail"    % "mail"                    % "1.4.1",
@@ -25,7 +26,11 @@ libraryDependencies ++= Seq(
 
 resolvers += "gphat" at "https://raw.github.com/gphat/mvn-repo/master/releases/"
 
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
+
+routesGenerator := InjectedRoutesGenerator
 
 // buildInfoSettings
 //
