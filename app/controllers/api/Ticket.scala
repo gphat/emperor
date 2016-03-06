@@ -66,8 +66,8 @@ class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport w
 
           val rt = TicketModel.assign(
             ticketId = ticket.id.get, userId = request.user.id.get,
-            assigneeId = (jsObj \ "userId").as[Option[Long]],
-            comment = (jsObj \ "comment").as[Option[String]]
+            assigneeId = (jsObj \ "userId").asOpt[Long],
+            comment = (jsObj \ "comment").asOpt[String]
           )
           Stats.addEvent("ticketsAssigned", Map("ticketId" -> ticketId))
           Ok(Json.toJson(rt))
@@ -161,7 +161,7 @@ class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport w
           if(WorkflowModel.verifyStatusInWorkflow(wf.id.get, statusId)) {
             TicketModel.changeStatus(
               ticketId = ticket.id.get, userId = request.user.id.get,
-              newStatusId = statusId, comment = (jsObj \ "comment").as[Option[String]]
+              newStatusId = statusId, comment = (jsObj \ "comment").asOpt[String]
             )
             Stats.addEvent("ticketsStatused", Map("ticketId" -> ticketId))
             Ok(Json.toJson(TicketModel.getFullByStringId(ticketId).get))
@@ -188,9 +188,9 @@ class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport w
           priorityId = (jsObj \ "priorityId").as[Long],
           severityId = (jsObj \ "severityId").as[Long],
           summary = (jsObj \ "summary").as[String],
-          description = (jsObj \ "description").as[Option[String]],
-          assigneeId = (jsObj \ "assigneeId").as[Option[Long]],
-          position = (jsObj \ "position").as[Option[Long]]
+          description = (jsObj \ "description").asOpt[String],
+          assigneeId = (jsObj \ "assigneeId").asOpt[Long],
+          position = (jsObj \ "position").asOpt[Long]
         ).fold(
           error => {
             BadRequest(Json.obj("status" -> "KO", "message" -> Messages(error)))
@@ -321,7 +321,7 @@ class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport w
           val resId = (jsObj \ "resolutionId").as[Long]
           TicketModel.resolve(
             ticketId = ticket.id.get, userId = request.user.id.get,
-            resolutionId = resId, comment = (jsObj \ "comment").as[Option[String]]
+            resolutionId = resId, comment = (jsObj \ "comment").asOpt[String]
           )
           val json = Json.toJson(TicketModel.getFullByStringId(ticketId).get)
           Stats.addEvent("ticketsResolved", Map("ticketId" -> ticketId))
@@ -345,7 +345,7 @@ class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport w
         json.transform(validateUnresolution).map({ jsObj =>
           TicketModel.unresolve(
             ticketId = ticket.id.get, userId = request.user.id.get,
-            comment = (jsObj \ "comment").as[Option[String]]
+            comment = (jsObj \ "comment").asOpt[String]
           )
           Stats.addEvent("ticketsUnresolved", Map("ticketId" -> ticketId))
           Ok(Json.toJson(TicketModel.getFullByStringId(ticketId).get))
