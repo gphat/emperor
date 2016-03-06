@@ -3,6 +3,7 @@ package controllers
 import emp._
 import emp.util.Search._
 import play.api._
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 import play.api.mvc.Security._
 import play.api.db._
@@ -10,7 +11,7 @@ import models.{ProjectModel,SearchModel}
 import org.slf4j.{Logger,LoggerFactory}
 import emp.util.Search._
 
-object Core extends Controller with Secured {
+class Core(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(page: Int = 1, count: Int = 10) = IsAuthenticated() { implicit request =>
 

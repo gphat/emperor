@@ -9,7 +9,7 @@ import org.joda.time.DateTime
 import play.api._
 import play.api.data._
 import play.api.data.Forms._
-import play.api.i18n.Messages
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.json.Json._
@@ -20,7 +20,7 @@ import models.TicketModel._
 import org.joda.time.DateTime
 import scala.math._
 
-object Ticket extends Controller with Secured {
+class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val linkForm = Form(
     mapping(
@@ -92,7 +92,7 @@ object Ticket extends Controller with Secured {
       description = None
     )
 
-    val maybeProject: Option[Project] = if(projectId.isDefined) {
+    val maybeProject: Option[models.Project] = if(projectId.isDefined) {
       ProjectModel.getById(projectId.get)
     } else if(projs.length == 1) {
       // If they've only got one project return that to save some trouble

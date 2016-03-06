@@ -4,10 +4,11 @@ import emp.JsonFormats._
 import controllers._
 import models.{UserModel,UserTokenModel}
 import play.api._
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 import play.api.libs.json.Json
 
-object User extends Controller with Secured {
+class User(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def startsWith(q: Option[String], callback: Option[String]) = IsAuthenticated() { implicit request =>
 

@@ -1,32 +1,42 @@
 name := """emperor"""
 
-version := "2.0.0"
+version := "3.0.0"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, BuildInfoPlugin)
 
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.7"
 
 libraryDependencies ++= Seq(
   jdbc,
-  anorm,
+  evolutions,
   cache,
   ws,
   "org.specs2"    %% "specs2"                 % "2.4.15"           % "test",
   "org.mindrot"   % "jbcrypt"                 % "0.3m",
   "javax.mail"    % "mail"                    % "1.4.1",
   "org.apache.commons" % "commons-email"      % "1.2",
-  "joda-time"     % "joda-time"               % "2.6",
-  "wabisabi"      %% "wabisabi"               % "2.0.11",
-  "org.pegdown"   % "pegdown"                 % "1.4.2",
-  "org.postgresql"% "postgresql"              % "9.3-1102-jdbc41",
-  "com.adrianhurt"%% "play-bootstrap3"        % "0.3"
+  "joda-time"     % "joda-time"               % "2.9.2",
+  "wabisabi"      %% "wabisabi"               % "2.1.4",
+  "org.pegdown"   % "pegdown"                 % "1.6.0",
+  "org.postgresql"% "postgresql"              % "9.4.1208.jre7",
+  "com.typesafe.play" %% "anorm"              % "2.4.0",
+  "com.adrianhurt"%% "play-bootstrap"         % "1.0-P24-B3-SNAPSHOT"
 )
 
 resolvers += "gphat" at "https://raw.github.com/gphat/mvn-repo/master/releases/"
 
-buildInfoSettings
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
-sourceGenerators in Compile <+= buildInfo
+// buildInfoSettings
+//
+// sourceGenerators in Compile <+= buildInfo
+
+// lazy val root = (project in file(".")).
+//   enablePlugins(BuildInfoPlugin).
+//   settings(
+//     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+//     buildInfoPackage := "hello"
+//   )
 
 buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion)
 

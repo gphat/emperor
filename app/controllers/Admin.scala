@@ -2,10 +2,11 @@ package controllers
 
 import controllers.Auth._
 import play.api._
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 import models.SearchModel
 
-object Admin extends Controller with Secured {
+class Admin(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def reindex = IsAuthenticated(admin = true) { implicit request =>
 

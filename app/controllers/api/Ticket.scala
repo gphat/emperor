@@ -7,7 +7,7 @@ import emp.util.Stats
 import emp.JsonFormats._
 import models._
 import org.joda.time.DateTime
-import play.api.i18n.Messages
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -15,7 +15,7 @@ import play.api.libs.json.Reads._
 import play.api.mvc._
 import scala.math.abs
 
-object Ticket extends Controller with Secured {
+class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val emptyObj = __.json.put(Json.obj())
 
@@ -58,7 +58,7 @@ object Ticket extends Controller with Secured {
   ).reduce
 
   def assign(ticketId: String, callback: Option[String]) = IsAuthenticated() { implicit request =>
-    
+
     TicketModel.getFullByStringId(ticketId).map({ ticket =>
 
       request.body.asJson.map({ json =>
@@ -119,7 +119,7 @@ object Ticket extends Controller with Secured {
           ))
         ))
       )
-      
+
       Ok(json)
     }).getOrElse(
       NotFound(Json.obj("status" -> "KO", "message" -> "api.unknown.entity"))

@@ -4,9 +4,10 @@ package controllers
 import emp._
 import collection.JavaConversions._
 import models._
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 
-object Search extends Controller with Secured {
+class Search(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(page: Int, count: Int, query: String, sort: Option[String] = None, order: Option[String] = None) = IsAuthenticated() { implicit request =>
 

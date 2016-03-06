@@ -124,7 +124,7 @@ object Auth extends Controller {
 }
 
 case class AuthenticatedRequest(
-  val user: User, request: Request[AnyContent]
+  val user: models.User, request: Request[AnyContent]
 ) extends WrappedRequest(request)
 
 /**

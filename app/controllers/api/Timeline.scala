@@ -4,12 +4,12 @@ import emp.JsonFormats._
 import emp.util.Search._
 import controllers._
 import models._
-import play.api.i18n.Messages
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-object Timeline extends Controller with Secured {
+class Timeline(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(page: Int = 1, count: Int = 10, callback: Option[String]) = IsAuthenticated() { implicit request =>
 

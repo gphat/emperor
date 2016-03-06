@@ -5,12 +5,12 @@ import emp._
 import emp.JsonFormats._
 import emp.util.Stats
 import models._
-import play.api.i18n.Messages
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-object Search extends Controller with Secured {
+class Search(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(page: Int, count: Int, query: String, sort: Option[String] = None, order: Option[String] = None, callback: Option[String]) = IsAuthenticated() { implicit request =>
 

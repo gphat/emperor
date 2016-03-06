@@ -6,7 +6,7 @@ These instructions are suitable for developers, not for a permanent installation
 
 ## Install a JDK
 
-JDK 6 is required.  7 is used for development, but not required.
+JDK 8 is required.
 
 ## Install Play framework
 

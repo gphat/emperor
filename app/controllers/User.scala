@@ -6,6 +6,7 @@ import org.joda.time.DateTime
 import play.api._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 import play.api.mvc.Security._
 import play.api.db._
@@ -13,7 +14,7 @@ import models.{ProjectModel,SearchModel,UserModel,UserTokenModel}
 import org.slf4j.{Logger,LoggerFactory}
 import emp.util.Search._
 
-object User extends Controller with Secured {
+class User(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val editForm = Form(
     mapping(
