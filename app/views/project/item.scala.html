@@ -11,7 +11,7 @@
 </div>
 <h1><a class="btn" href="@controllers.routes.Project.edit(project.id.get)"><i class="icon-edit"></i></a> @Messages("project.with.id", project.name)</h1>
 <div class="row-fluid">
- <div class="span3">
+ <div class="col-md-3">
    <ul class="well well-small nav nav-list">
     <li class="nav-header">@Messages("project.summary.links")</li>
     <li><a href="@routes.Board.index(project.id.get)">@Messages("project.summary.link.kanban")</a></li>
@@ -29,7 +29,7 @@
     </div>
    </div>
  </div>
- <div class="span6">
+ <div class="col-md-3">
   <h2>@Messages("general.timeline")</h2>
   <div data-bind="if: events().total < 1"><div class="alert alert-info">@Messages("general.timeline.empty")</div></div>
   <div data-bind="if: events().total() > 0">
@@ -56,7 +56,7 @@
    </div>
   </div>
  </div>
- <div class="span3">
+ <div class="col-md-3">
   <h2>@Messages("project.summary.owner")</h2>
   @if(owner.isDefined) {
    @owner.map { o =>

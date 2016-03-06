@@ -5,7 +5,7 @@
 
 @main(Messages("search.results")) {
 <div class="row-fluid">
- <div class="span2">
+ <div class="col-md-2">
   <ul class="nav nav-list well well-small search-well">
     <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
     <span data-bind="visible: pager().items().length == 0">@Messages("search.facet.none")</span>
@@ -25,7 +25,7 @@
    </div>
   </div>
  </div>
- <div class="span10">
+ <div class="col-md-10">
   <div data-bind="visible: pager().items().length == 0" class="alert alert-warning">@Messages("search.results.none")</div>
   <table class="table table-bordered table-hover table-rounded table-striped ticket-search" data-bind="visible: pager().items().length > 0">
    <thead>

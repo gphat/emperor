@@ -12,7 +12,7 @@
 </div>
 <h1>@Messages("board.title", project.name)</h1>
 <div class="row-fluid">
- <div class="span2">
+ <div class="col-md-2">
   <ul class="nav nav-list well well-small search-well">
     <li class="head"><i class="icon-filter"></i> @Messages("search.facet.filters")</li>
     <span data-bind="visible: pager().items().length == 0">@Messages("search.facet.none")</span>
@@ -32,7 +32,7 @@
    </div>
   </div>
  </div>
- <div class="span10 board">
+ <div class="col-md-10 board">
   <div>
    <div class="alert alert-info" data-bind="visible: empty">@Messages("general.board.empty")</div>
   </div>

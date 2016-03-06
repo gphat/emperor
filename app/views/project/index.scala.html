@@ -10,15 +10,15 @@
 <div class="alert alert-info">@Messages("general.projects.empty")</a> <a href="@controllers.routes.Project.create">@Messages("general.projects.add")</a></div>
 } else {
 @Option(page.items).filterNot(_.isEmpty).map { projects =>
-<ul class="thumbnails">
+<div class="row">
   @projects.map { project =>
-  <li class="span4">
+  <div class="col-xs-6 col-md-3">
    <div class="thumbnail">
     <h3><a href="@controllers.routes.Project.item(project.id.get)">@project.name</a></h3>
    </div>
-  </li>
+  </div>
   }
-</ul>
+</div>
 }
 }
 }
