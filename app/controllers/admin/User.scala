@@ -1,5 +1,7 @@
 package controllers.admin
 
+import javax.inject.Inject
+
 import anorm._
 import controllers._
 import models.UserModel
@@ -15,7 +17,7 @@ import play.api.mvc._
 import play.api.Play.current
 import play.api.db._
 
-class User(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class User @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val newForm = Form(
     mapping(

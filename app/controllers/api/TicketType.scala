@@ -1,5 +1,7 @@
 package controllers.api
 
+import javax.inject.Inject
+
 import emp.JsonFormats._
 import controllers._
 import models._
@@ -8,7 +10,7 @@ import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-class TicketType(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class TicketType @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(callback: Option[String]) = IsAuthenticated() { implicit request =>
     Ok(Json.toJson(TicketTypeModel.getAll))

@@ -1,5 +1,7 @@
 package controllers.api
 
+import javax.inject.Inject
+
 import anorm.Id
 import emp.JsonFormats._
 import controllers._
@@ -9,7 +11,7 @@ import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-class TicketLinkType(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class TicketLinkType @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(callback: Option[String]) = IsAuthenticated() { implicit request =>
 

@@ -1,5 +1,7 @@
 package controllers.api
 
+import javax.inject.Inject
+
 import anorm.{NotAssigned,Pk}
 import controllers._
 import emp.util.Search._
@@ -15,7 +17,7 @@ import play.api.libs.json.Reads._
 import play.api.mvc._
 import scala.math.abs
 
-class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val emptyObj = __.json.put(Json.obj())
 

@@ -10,6 +10,8 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.DateTime
 import play.api.i18n.Messages
+import play.api.Play.current
+import play.api.i18n.Messages.Implicits._
 import play.api.libs.json.Json._
 import play.api.libs.json._
 
@@ -23,8 +25,8 @@ object JsonFormats {
 
   private def optionLongtoJsValue(maybeId: Option[Long]) = maybeId.map({ l => JsNumber(l) }).getOrElse(JsNull)
 
-  private def optionI18nStringtoJsValue(maybeId: Option[String])(implicit messages: Messages) = maybeId.map({ s => JsString(Messages(s)) }).getOrElse(JsNull)
-  private def optionStringtoJsValue(maybeId: Option[String])(implicit messages: Messages) = maybeId.map({ s => JsString(s) }).getOrElse(JsNull)
+  private def optionI18nStringtoJsValue(maybeId: Option[String]) = maybeId.map({ s => JsString(Messages(s)) }).getOrElse(JsNull)
+  private def optionStringtoJsValue(maybeId: Option[String]) = maybeId.map({ s => JsString(s) }).getOrElse(JsNull)
 
   /**
    * JSON conversion for Comment
@@ -135,7 +137,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(l: FullLink)(implicit messages: Messages): JsValue = {
+    def writes(l: FullLink): JsValue = {
 
       val childRes = l.childResolutionId match {
         case Some(reso) => JsNumber(reso)
@@ -237,7 +239,7 @@ object JsonFormats {
       ))
     }
 
-    def writes(ticket: FullTicket)(implicit messages: Messages): JsValue = {
+    def writes(ticket: FullTicket): JsValue = {
 
       val links = TicketModel.getLinks(ticket.id.get).groupBy(_.typeName)
 
@@ -322,7 +324,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(l: Link)(implicit messages: Messages): JsValue = {
+    def writes(l: Link): JsValue = {
 
       val ldoc: Map[String,JsValue] = Map(
         "id"             -> JsNumber(l.id.get),
@@ -412,7 +414,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(obj: TicketPriority)(implicit messages: Messages): JsValue = {
+    def writes(obj: TicketPriority): JsValue = {
 
       val doc: Map[String,JsValue] = Map(
         "id"            -> JsNumber(obj.id.get),
@@ -439,7 +441,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(obj: TicketSeverity)(implicit messages: Messages): JsValue = {
+    def writes(obj: TicketSeverity): JsValue = {
 
       val doc: Map[String,JsValue] = Map(
         "id"            -> JsNumber(obj.id.get),
@@ -465,7 +467,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(obj: TicketLinkType)(implicit messages: Messages): JsValue = {
+    def writes(obj: TicketLinkType): JsValue = {
 
       val doc: Map[String,JsValue] = Map(
         "id"            -> JsNumber(obj.id.get),
@@ -489,7 +491,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(obj: TicketResolution)(implicit messages: Messages): JsValue = {
+    def writes(obj: TicketResolution): JsValue = {
 
       val doc: Map[String,JsValue] = Map(
         "id"            -> JsNumber(obj.id.get),
@@ -513,7 +515,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(obj: TicketType)(implicit messages: Messages): JsValue = {
+    def writes(obj: TicketType): JsValue = {
 
       val doc: Map[String,JsValue] = Map(
         "id"            -> JsNumber(obj.id.get),
@@ -543,7 +545,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(obj: User)(implicit messages: Messages): JsValue = {
+    def writes(obj: User): JsValue = {
 
       val doc: Map[String,JsValue] = Map(
         "id"              -> obj.id.map(i => JsNumber(i)).getOrElse(JsNull),
@@ -572,7 +574,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(obj: UserToken)(implicit messages: Messages): JsValue = {
+    def writes(obj: UserToken): JsValue = {
       val doc: Map[String,JsValue] = Map(
         "token"         -> JsString(obj.token.get),
         "userId"        -> JsNumber(obj.userId),
@@ -595,7 +597,7 @@ object JsonFormats {
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
-    def writes(w: Workflow)(implicit messages: Messages): JsValue = {
+    def writes(w: Workflow): JsValue = {
 
       val wsdoc: Map[String,JsValue] = Map(
         "id"              -> JsNumber(w.id.get),
@@ -622,7 +624,7 @@ object JsonFormats {
       position    = (json \ "position").as[Int]
     ))
 
-    def writes(ws: WorkflowStatus)(implicit messages: Messages): JsValue = {
+    def writes(ws: WorkflowStatus): JsValue = {
 
       val wsdoc: Map[String,JsValue] = Map(
         "id"              -> JsNumber(ws.id.get),

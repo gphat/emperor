@@ -1,5 +1,7 @@
 package controllers
 
+import javax.inject.Inject
+
 import emp.event._
 import emp.util.Stats
 import play.api._
@@ -11,7 +13,7 @@ import play.api.mvc._
 import models._
 import org.mindrot.jbcrypt.BCrypt
 
-class Auth(val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class Auth @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   val loginForm = Form(
     mapping(

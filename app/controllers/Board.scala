@@ -1,5 +1,7 @@
 package controllers
 
+import javax.inject.Inject
+
 import controllers._
 import emp.util.Search._
 import emp.util.Stats
@@ -8,7 +10,7 @@ import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc._
 
-class Board(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Board @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(projectId: Long) = IsAuthenticated() { implicit request =>
     ProjectModel.getById(projectId).map({ project =>

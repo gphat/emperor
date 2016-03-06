@@ -1,5 +1,7 @@
 package controllers
 
+import javax.inject.Inject
+
 import anorm._
 import emp.util.Pagination.Page
 import emp.util.Search._
@@ -20,7 +22,7 @@ import models.TicketModel._
 import org.joda.time.DateTime
 import scala.math._
 
-class Ticket(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val linkForm = Form(
     mapping(

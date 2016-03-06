@@ -1,5 +1,7 @@
 package controllers.api
 
+import javax.inject.Inject
+
 import emp.JsonFormats._
 import emp.util.Search._
 import controllers._
@@ -9,7 +11,7 @@ import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-class Timeline(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Timeline @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(page: Int = 1, count: Int = 10, callback: Option[String]) = IsAuthenticated() { implicit request =>
 

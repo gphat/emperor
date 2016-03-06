@@ -1,5 +1,7 @@
 package controllers
 
+import javax.inject.Inject
+
 import anorm._
 import emp.util.Search._
 import org.joda.time.DateTime
@@ -14,7 +16,7 @@ import models.{ProjectModel,SearchModel,UserModel,UserTokenModel}
 import org.slf4j.{Logger,LoggerFactory}
 import emp.util.Search._
 
-class User(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class User @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val editForm = Form(
     mapping(

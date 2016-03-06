@@ -1,5 +1,7 @@
 package controllers
 
+import javax.inject.Inject
+
 import anorm._
 import emp.JsonFormats._
 import emp.util.Search._
@@ -13,7 +15,7 @@ import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 import play.api.libs.json.Json
 
-class Project(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Project @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val addProjectForm = Form(
     mapping(

@@ -1,5 +1,6 @@
-
 package controllers.api
+
+import javax.inject.Inject
 
 import emp.JsonFormats._
 import controllers._
@@ -9,7 +10,7 @@ import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-class Project(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Project @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def assignableUsers(id: Long, callback: Option[String]) = IsAuthenticated() { implicit request =>
 

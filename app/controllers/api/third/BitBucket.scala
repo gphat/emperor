@@ -1,5 +1,7 @@
 package controllers.api.third
 
+import javax.inject.Inject
+
 import emp.JsonFormats._
 import controllers._
 import models.{TicketModel,UserModel}
@@ -11,7 +13,7 @@ import play.api.libs.json.Json
 import play.api.libs.json._
 import play.api.Play.current
 
-class BitBucket(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class BitBucket @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   val ticketFinder = "\\b(\\p{L}{1}[\\p{Nd}|\\p{L}]*-\\d+)\\b".r
   val emailFinder = """(\w+)@([\w\.]+)""".r

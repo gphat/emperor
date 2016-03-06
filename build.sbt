@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-email"      % "1.2",
   "joda-time"     % "joda-time"               % "2.9.2",
   "wabisabi"      %% "wabisabi"               % "2.1.4",
+  "net.databinder.dispatch" %% "dispatch-core" % "0.11.3",
   "org.pegdown"   % "pegdown"                 % "1.6.0",
   "org.postgresql"% "postgresql"              % "9.4.1208.jre7",
   "com.typesafe.play" %% "anorm"              % "2.4.0",

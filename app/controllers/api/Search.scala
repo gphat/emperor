@@ -1,5 +1,7 @@
 package controllers.api
 
+import javax.inject.Inject
+
 import controllers.Secured
 import emp._
 import emp.JsonFormats._
@@ -10,7 +12,7 @@ import play.api.libs.json._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-class Search(val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Search @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
 
   def index(page: Int, count: Int, query: String, sort: Option[String] = None, order: Option[String] = None, callback: Option[String]) = IsAuthenticated() { implicit request =>
 
