@@ -1,8 +1,7 @@
 @(objForm: Form[(models.User)])(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import emp.DateFormatter
-@import helper._
-@import helper.bootstrap.bootstrapField
+@import b3.vertical.fieldConstructor
 
 @main(Messages("admin.user.add")) {
 <ul class="breadcrumb">
@@ -15,21 +14,15 @@
  <li class="active">@Messages("admin.user.add")</li>
 </ul>
 <h1>@Messages("admin.user.add")</h1>
-@helper.form(action = controllers.admin.routes.User.add) {
- <fieldset>
-  @helper.input(objForm("username"), '_label -> Messages("user.email")) { (id, name, value, args) =>
-   <input type="email" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
-  }
-  @helper.checkbox(objForm("admin"), '_label -> Messages("user.admin"))
-  @helper.inputPassword(objForm("password"), '_label -> Messages("user.password"))
-  @helper.inputText(objForm("realName"), '_label -> Messages("user.realname"))
-  @helper.select(field = objForm("timezone"), options = DateFormatter.timeZoneList, '_label -> Messages("user.timezone"))
-  @helper.inputText(objForm("location"), '_label -> Messages("user.location"))
-  @helper.inputText(objForm("url"), '_label -> Messages("user.url"))
-  @helper.inputText(objForm("title"), '_label -> Messages("user.title"))
-  <div class="form-actions">
-   <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
-  </div>
- </fieldset>
+@b3.form(action = controllers.admin.routes.User.add) {
+  @b3.email(objForm("username"), '_label -> Messages("user.email"))
+  @b3.checkbox(objForm("admin"), '_label -> Messages("user.admin"))
+  @b3.password(objForm("password"), '_label -> Messages("user.password"))
+  @b3.text(objForm("realName"), '_label -> Messages("user.realname"))
+  @b3.select(field = objForm("timezone"), options = DateFormatter.timeZoneList, '_label -> Messages("user.timezone"))
+  @b3.text(objForm("location"), '_label -> Messages("user.location"))
+  @b3.text(objForm("url"), '_label -> Messages("user.url"))
+  @b3.text(objForm("title"), '_label -> Messages("user.title"))
+  @b3.submit('class -> "btn btn-primary"){ <i class="icon-ok"></i> @Messages("form.submit") }
 }
 }

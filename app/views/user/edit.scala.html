@@ -1,27 +1,20 @@
 @(id: Long, objForm: Form[(models.User)], tokenForm: Form[models.UserToken], passForm: Form[(NewPassword)])(implicit request: AuthenticatedRequest, messages: Messages)
 
 @import emp.DateFormatter
-@import helper._
-@import helper.bootstrap.bootstrapField
+@import b3.vertical.fieldConstructor
 
 @main(Messages("user.edit")) {
 <div class="row-fluid">
  <div class="span6">
   <h1>@Messages("user.edit")</h1>
-  @helper.form(action = controllers.routes.User.update(id)) {
-   <fieldset>
-    @helper.input(objForm("username"), '_label -> Messages("user.email")) { (id, name, value, args) =>
-     <input type="email" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
-    }
-    @helper.inputText(objForm("realName"), '_label -> Messages("user.realname"))
-    @helper.select(field = objForm("timezone"), options = DateFormatter.timeZoneList, '_label -> Messages("user.timezone"))
-    @helper.inputText(objForm("location"), '_label -> Messages("user.location"))
-    @helper.inputText(objForm("url"), '_label -> Messages("user.url"))
-    @helper.inputText(objForm("title"), '_label -> Messages("user.title"))
-    <div class="form-actions">
-     <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
-    </div>
-   </fieldset>
+  @b3.form(action = controllers.routes.User.update(id)) {
+    @b3.email(objForm("username"), '_label -> Messages("user.email"))
+    @b3.text(objForm("realName"), '_label -> Messages("user.realname"))
+    @b3.select(field = objForm("timezone"), options = DateFormatter.timeZoneList, '_label -> Messages("user.timezone"))
+    @b3.text(objForm("location"), '_label -> Messages("user.location"))
+    @b3.text(objForm("url"), '_label -> Messages("user.url"))
+    @b3.text(objForm("title"), '_label -> Messages("user.title"))
+    @b3.submit('class -> "btn btn-primary"){ <i class="icon-ok"></i> @Messages("form.submit") }
   }
  </div>
  <div class="span6">
@@ -29,14 +22,10 @@
   @passForm.globalError.map { error =>
     <div class="alert alert-error">@Messages(error.message)</div>
   }
-  @helper.form(action = controllers.routes.User.updatePassword(id)) {
-   <fieldset>
-    @helper.inputPassword(passForm("password"), '_label -> Messages("user.password"))
-    @helper.inputPassword(passForm("password2"), '_label -> Messages("user.password.confirm"))
-   </fieldset>
-   <div class="form-actions">
-    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
-   </div>
+  @b3.form(action = controllers.routes.User.updatePassword(id)) {
+    @b3.password(passForm("password"), '_label -> Messages("user.password"))
+    @b3.password(passForm("password2"), '_label -> Messages("user.password.confirm"))
+    @b3.submit('class -> "btn btn-primary"){ <i class="icon-ok"></i> @Messages("form.submit") }
   }
   <div class="btn-group btn-group-above-table pull-right">
    <a class="btn" data-toggle="modal" href="#token"><i class="icon-plus"></i> @Messages("user.token.add")</a>
@@ -75,7 +64,7 @@
  <div class="modal-body">
    <p>@Html(Messages("user.token.summary"))</p>
    <fieldset>
-     @helper.inputText(field = tokenForm("comment"), args = 'class -> "span4", '_label -> Messages("user.token.comment"))
+     @b3.password(field = tokenForm("comment"), args = 'class -> "span4", '_label -> Messages("user.token.comment"))
    </fieldset>
  </div>
  <div class="modal-footer">

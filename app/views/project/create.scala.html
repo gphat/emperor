@@ -7,20 +7,19 @@
   severities: List[(String,String)]
 )(implicit request: AuthenticatedRequest, messages: Messages)
 
-@import helper._
-@import helper.bootstrap.bootstrapField
+@import b3.vertical.fieldConstructor
 
 @main(Messages("project.add")) {
 <h1>@Messages("project.add")</h1>
-@helper.form(action = controllers.routes.Project.add) {
+@b3.form(action = controllers.routes.Project.add) {
  <fieldset>
-  @helper.inputText(objForm("name"), '_label -> Messages("project.name"), 'placeholder -> Messages("project.name.placeholder"))
-  @helper.inputText(objForm("key"), '_label -> Messages("project.key"), 'placeholder -> Messages("project.key.placeholder"))
-  @helper.select(field = objForm("owner_id"), options = users, args = '_label -> Messages("project.owner"))
-  @helper.select(field = objForm("default_assignee"), options = asses, args = '_label -> Messages("project.default.assignee"))
-  @helper.select(field = objForm("default_priority_id"), options = priorities, args = '_label -> Messages("project.default.priority"))
-  @helper.select(field = objForm("default_severity_id"), options = severities, args = '_label -> Messages("project.default.severity"))
-  @helper.select(field = objForm("default_type_id"), options = ttypes, args = '_label -> Messages("project.default.ttype"))
+  @b3.text(objForm("name"), '_label -> Messages("project.name"), 'placeholder -> Messages("project.name.placeholder"))
+  @b3.text(objForm("key"), '_label -> Messages("project.key"), 'placeholder -> Messages("project.key.placeholder"))
+  @b3.select(field = objForm("owner_id"), options = users, args = '_label -> Messages("project.owner"))
+  @b3.select(field = objForm("default_assignee"), options = asses, args = '_label -> Messages("project.default.assignee"))
+  @b3.select(field = objForm("default_priority_id"), options = priorities, args = '_label -> Messages("project.default.priority"))
+  @b3.select(field = objForm("default_severity_id"), options = severities, args = '_label -> Messages("project.default.severity"))
+  @b3.select(field = objForm("default_type_id"), options = ttypes, args = '_label -> Messages("project.default.ttype"))
   <div class="form-actions">
    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> @Messages("form.submit")</button>
   </div>

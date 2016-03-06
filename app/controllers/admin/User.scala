@@ -49,28 +49,21 @@ class User @Inject() (val messagesApi: MessagesApi) extends Controller with I18n
 
   def create = IsAuthenticated(admin = true) { implicit request =>
 
-    val users = UserModel.list(
-      page = 1, count = 10
+    // Create a default user for filling in the form with the
+    // timezone, which we will default to Joda's "default" time.
+    val defaultUser = models.User(
+      id = Id(1.toLong),
+      username = "",
+      password = "",
+      realName = "",
+      timezone = Play.configuration.getString("emperor.timezone").getOrElse(DateTimeZone.getDefault().getID),
+      location = None,
+      title = None,
+      url = None,
+      dateCreated = new DateTime()
     )
-    if(users.total < 1) {
-      // Create a default user for filling in the form with the
-      // timezone, which we will default to Joda's "default" time.
-      val defaultUser = models.User(
-        id = Id(1.toLong),
-        username = "",
-        password = "",
-        realName = "",
-        timezone = Play.configuration.getString("emperor.timezone").getOrElse(DateTimeZone.getDefault().getID),
-        location = None,
-        title = None,
-        url = None,
-        dateCreated = new DateTime()
-      )
 
-      Ok(views.html.admin.user.create(newForm.fill(defaultUser)))
-    } else {
-      Redirect(controllers.admin.routes.User.index()).flashing("error" -> "admin.billing.user.limit")
-    }
+    Ok(views.html.admin.user.create(newForm.fill(defaultUser)))
   }
 
   def index(page: Int = 1, count: Int = 10) = IsAuthenticated(admin = true) { implicit request =>
