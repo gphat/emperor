@@ -12,14 +12,14 @@
 @main(title = Messages("ticket.page.title", ticket.ticketId, ticket.summary), currentProject = Some(ticket.project.id)) {
   <div class="statuses">
    <div class="btn-group" data-bind="foreach: statuses, visible: !ticket().resolutionId()">
-    <a class="btn" data-bind="click: pickStatus, css: { 'active': id() == ticket().workflowStatusId() }"><i data-bind="visible: id() == ticket().workflowStatusId()" class="icon-map-marker"></i> <span data-bind="text: nameI18N"></span></a>
+    <a class="btn" data-bind="click: pickStatus, css: { 'active': id() == ticket().workflowStatusId() }"><i data-bind="visible: id() == ticket().workflowStatusId()" class="fa fa-map-marker"></i> <span data-bind="text: nameI18N"></span></a>
    </div>
   </div>
 
   <div class="card">
    <header data-bind="style: { backgroundColor: '#' + ticket().typeColor() }">
     <hgroup>
-     <a class="btn pull-left" href="/ticket/edit/@ticket.ticketId"><i class="icon-edit"></i></a>
+     <a class="btn pull-left" href="/ticket/edit/@ticket.ticketId"><i class="fa fa-edit"></i></a>
      <h1><span data-bind="text: ticket().typeNameI18N"></span>: <span data-bind="text: ticket().summary"></span></h1>
      <h4>
       <a data-bind="attr: { href: '/project/' + ticket().projectId() }, text: ticket().projectName"></a>: <span data-bind="text: ticket().ticketId"></span>
@@ -34,16 +34,16 @@
     <ul>
      <li>
       @Messages("ticket.assignee")
-      <span data-bind="visible: ticket().assigneeId"><a class="action btn btn-small" data-bind="click: function(data) { action('assign') }"><i class="icon-edit"></i> <span data-bind="text: ticket().assigneeName"></span></a></span>
-      <span data-bind="visible: !ticket().assigneeId()"><a class="action btn btn-small" data-bind="click: function(data) { action('assign') }"><i class="icon-edit"></i> <span>@Messages("ticket.unassigned")</span></a></span>
+      <span data-bind="visible: ticket().assigneeId"><a class="action btn btn-small" data-bind="click: function(data) { action('assign') }"><i class="fa fa-edit"></i> <span data-bind="text: ticket().assigneeName"></span></a></span>
+      <span data-bind="visible: !ticket().assigneeId()"><a class="action btn btn-small" data-bind="click: function(data) { action('assign') }"><i class="fa fa-edit"></i> <span>@Messages("ticket.unassigned")</span></a></span>
      </li>
      <li>@Messages("ticket.reporter") <strong><a data-bind="attr: { href: '/user/' + ticket().userId() }, text: ticket().userName"></a></strong></li>
      <li data-bind="style: { borderTopColor: '#' + ticket().priorityColor() }">@Messages("ticket.priority") <strong data-bind="text: ticket().priorityNameI18N"></strong></li>
      <li data-bind="style: { borderTopColor: '#' + ticket().severityColor() }">@Messages("ticket.severity") <strong data-bind="text: ticket().severityNameI18N"></strong></li>
      <li>@Messages("ticket.resolution") <strong data-bind="text: ticket().resolutionNameI18N"></strong></li>
      <li>
-      <a class="btn btn-danger" data-bind="click: function(data) { action('unresolve') }, visible: ticket().resolutionId()"><i class="icon-remove-sign"></i> @Messages("ticket.unresolve")</a>
-      <a class="btn btn-success" data-bind="click: function(data) { action('resolve') }, visible: !ticket().resolutionId()"><i class="icon-check-sign"></i> @Messages("ticket.resolve")</a>
+      <a class="btn btn-danger" data-bind="click: function(data) { action('unresolve') }, visible: ticket().resolutionId()"><i class="fa fa-minus-square-o"></i> @Messages("ticket.unresolve")</a>
+      <a class="btn btn-success" data-bind="click: function(data) { action('resolve') }, visible: !ticket().resolutionId()"><i class="fa fa-plus-square-o"></i> @Messages("ticket.resolve")</a>
      </li>
     </ul>
    </div>
@@ -56,7 +56,7 @@
   </div>
 
   <div id="link-body" ng-show="links.length > 0">
-   <h4>@Messages("ticket.links") <a class="pull-right btn btn-small" data-bind="click: function(data) { action('link') }" class="btn"><i class="icon-link"></i> @Messages("ticket.action.link")</a></h4>
+   <h4>@Messages("ticket.links") <a class="pull-right btn btn-small" data-bind="click: function(data) { action('link') }" class="btn"><i class="fa fa-link"></i> @Messages("ticket.action.link")</a></h4>
     <table class="table table-striped table-condensed ticket-links">
      <tbody data-bind="foreach: links">
       <tr>
@@ -99,7 +99,7 @@
    </div>
   </div>
   <ul class="unstyled inline" data-bind="foreach: intendedLinkTickets">
-   <li><span class="label label-info label-removable"><span data-bind="text: ticketId"></span> &nbsp;<a class="remover" data-bind="click: function(il) { intendedLinkTickets.remove(il) }"><i class="icon-remove"></i></a></span></li>
+   <li><span class="label label-info label-removable"><span data-bind="text: ticketId"></span> &nbsp;<a class="remover" data-bind="click: function(il) { intendedLinkTickets.remove(il) }"><i class="fa fa-remove"></i></a></span></li>
   </ul>
   <div class="control-group">
    <label class="control-label" for="linkTick">@Messages("ticket.linkticket")</label>
@@ -159,7 +159,7 @@
  </ul>
  <form class="form-linline comment">
   <fieldset>
-   <button data-bind="click: doComment" class="btn btn-primary"  style="vertical-align: top"><i class="icon-check"></i> @Messages("ticket.comment")</button>
+   <button data-bind="click: doComment" class="btn btn-primary"  style="vertical-align: top"><i class="fa fa-check"></i> @Messages("ticket.comment")</button>
    <textarea class="span12" rows="1" data-bind="value: comment" name="comment" id="comment" placeholder="@Messages("ticket.comment.placeholder")"></textarea>
   </fieldset>
  </form>

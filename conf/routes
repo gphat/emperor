@@ -81,6 +81,7 @@ POST    /project                        controllers.Project.add
 
 GET     /search                         controllers.Search.index(page: Int ?= 1, count: Int ?= 10, query: String ?= "*", sort: Option[String] = None, order: Option[String] = None)
 
+POST    /ticket                         controllers.Ticket.add
 GET     /ticket/create                  controllers.Ticket.create(project: Option[Long] ?= None)
 GET     /ticket/:id                     controllers.Ticket.item(tab ?= "comments", id: String, page: Int ?= 1, count: Int ?= 10, query: String ?= "*")
 
