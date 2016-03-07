@@ -5,8 +5,12 @@ import akka.event.LookupClassification
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.actor.Actor
+import emp.plugin._
 import javax.inject._
 import models._
+import play.api.Environment
+import play.api.Logger
+import play.api.Play.current
 
 /**
  * Base class for events.
@@ -108,9 +112,43 @@ case class UnlinkTicketEvent(
  * $ - user/loggedin
  */
 @Singleton
-class EmperorEventBus extends ActorEventBus with LookupClassification {
+class EmperorEventBus @Inject() (val env: Environment) extends ActorEventBus with LookupClassification {
   type Event=EmperorEvent
   type Classifier=String
+
+  Logger.info("Application has started")
+
+  val actsystem = ActorSystem("Emperor")
+
+  val emailNotifier = actsystem.actorOf(Props(new EmailNotifier(current.configuration)))
+
+  EmailNotifier.relevantEvents.foreach { ev =>
+    Logger.debug("Subscribed Email Notifier to '" + ev + "'")
+    this.subscribe(emailNotifier, ev)
+  }
+
+  val searchIndexer = actsystem.actorOf(Props(new SearchIndexer(current.configuration)))
+
+  // Search indexer does not like running without ES
+  if(env.mode.toString != "TEST") {
+    SearchIndexer.relevantEvents.foreach { ev =>
+      Logger.debug("Subscribed Search Indexer to '" + ev + "'")
+      this.subscribe(searchIndexer, ev)
+    }
+  }
+
+  val forgotPasswordNotifier = actsystem.actorOf(Props(new ForgotPasswordNotifier(current.configuration)))
+
+  ForgotPasswordNotifier.relevantEvents.foreach { ev =>
+    Logger.debug("Subscribed Forgot Password Notifier to '" + ev + "'")
+    this.subscribe(forgotPasswordNotifier, ev)
+  }
+
+  // val signupNotifier = actsystem.actorOf(Props(new SignupNotifier(Play.configuration)))
+  // SignupNotifier.relevantEvents.foreach { ev =>
+  //   Logger.debug("Subscribed Signup Notifier to '" + ev + "'")
+  //   EmperorEventBus.subscribe(signupNotifier, ev)
+  // }
 
   protected def mapSize(): Int = 10
 
