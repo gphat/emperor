@@ -96,11 +96,6 @@ object ProjectModel {
       id.map({ pid =>
         SQL("CREATE SEQUENCE " + getSequenceName(pid)).execute
 
-        EmperorEventBus.publish(
-          NewProjectEvent(
-            projectId = pid
-          )
-        )
         Some(pid)
       }).getOrElse(None)
     }
@@ -221,12 +216,6 @@ object ProjectModel {
         'default_ticket_type_id -> project.defaultTypeId,
         'default_assignee -> project.defaultAssignee
       ).execute
-
-      EmperorEventBus.publish(
-        ChangeProjectEvent(
-          projectId = id
-        )
-      )
 
       getById(id)
     }

@@ -3,6 +3,7 @@ package controllers
 import javax.inject.Inject
 
 import anorm._
+import emp.event._
 import emp.util.Pagination.Page
 import emp.util.Search._
 import emp.util.Stats
@@ -22,7 +23,7 @@ import models.TicketModel._
 import org.joda.time.DateTime
 import scala.math._
 
-class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Ticket @Inject() (val messagesApi: MessagesApi, val eventBus: EmperorEventBus) extends Controller with I18nSupport with Secured {
 
   val linkForm = Form(
     mapping(
@@ -92,6 +93,11 @@ class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I1
             Redirect(routes.Core.index()).flashing("error" -> "ticket.add.failure")
           },
           ticket => {
+            eventBus.publish(
+              NewTicketEvent(
+                ticketId = ticket.id.get
+              )
+            )
             Stats.addEvent("ticketsCreated", Map("projectId" -> ticket.id.toString))
             Redirect(routes.Ticket.item(id = ticket.ticketId)).flashing("success" -> "ticket.add.success")
           }
@@ -165,7 +171,7 @@ class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I1
 
   def update(ticketId: String) = IsAuthenticated() { implicit request =>
 
-    TicketModel.getByStringId(ticketId).map({ ticket =>
+    TicketModel.getFullByStringId(ticketId).map({ ticket =>
 
       ticketDataForm.bindFromRequest.fold(
         errors => {
@@ -178,7 +184,17 @@ class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I1
           BadRequest(views.html.ticket.edit(ticketId, errors, assignees, assignees, assignees, projs, ttypes, prios, sevs))
         },
         value => {
-          TicketModel.update(request.user.id.get, ticket.id.get, value)
+          val newTick = TicketModel.update(request.user.id.get, ticket.id.get, value)
+          if(newTick.dataId != ticket.dataId) {
+            eventBus.publish(
+              ChangeTicketEvent(
+                ticketId = ticket.id.get,
+                oldDataId = ticket.dataId,
+                newDataId = newTick.dataId
+              )
+            )
+          }
+
           Redirect(routes.Ticket.item("comments", ticketId)).flashing("success" -> "ticket.edit.success")
         }
       )

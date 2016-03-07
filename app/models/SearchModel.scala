@@ -557,7 +557,7 @@ object SearchModel {
               } map { f =>
                 esClient.putMapping(indices = Seq(name), `type` = typeNames(i), body = mappings(i))
                 // Create the write alias so that new writes go to the correct index
-                Logger.debug(s"Aliasing $n -write to $name")
+                Logger.debug(s"Aliasing ${n}-write to $name")
                 Logger.debug("""{ "remove": { "index": """" + oldName + """", "alias": """" + n + """-write" } }, { "add": { "index": """ + name  + """", "alias": """" + n + """-write" } }""")
                 println(Await.result(esClient.createAlias(actions = """{ "remove": { "index": """" + oldName + """", "alias": """" + n + """-write" } }, { "add": { "index": """" + name  + """", "alias": """" + n + """-write" } }"""), Duration(5, "seconds")).getResponseBody)
               } recover {
@@ -622,7 +622,7 @@ object SearchModel {
     indexNames.foreach({ iname =>
       val oldName = iname + "_" + oldIndexNum.toString
       val newName = iname + "_" + newIndexNum.toString
-      Logger.debug(s"Aliasing $iname -read to $newName")
+      Logger.debug(s"Aliasing ${iname}-read to $newName")
       Await.result(esClient.createAlias(actions = """{ "remove": { "index": """" + oldName + """", "alias": """" + iname + """-read" }}, { "add": { "index": """" + newName  + """", "alias": """" + iname + """-read" }}"""), Duration(5, "seconds"))
       Await.result(esClient.deleteIndex(oldName), Duration(5, "seconds"))
     })

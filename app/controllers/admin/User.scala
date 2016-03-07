@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import anorm._
 import controllers._
+import emp.event._
 import models.UserModel
 import org.mindrot.jbcrypt.BCrypt
 import org.joda.time.{DateTime,DateTimeZone}
@@ -17,7 +18,7 @@ import play.api.mvc._
 import play.api.Play.current
 import play.api.db._
 
-class User @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class User @Inject() (val messagesApi: MessagesApi, val eventBus: EmperorEventBus) extends Controller with I18nSupport with Secured {
 
   val newForm = Form(
     mapping(
@@ -42,6 +43,11 @@ class User @Inject() (val messagesApi: MessagesApi) extends Controller with I18n
       errors => BadRequest(views.html.admin.user.create(errors)),
       value => {
         val user = UserModel.create(value)
+        eventBus.publish(
+          NewUserEvent(
+            userId = user.id.get
+          )
+        )
         Redirect(controllers.routes.User.item(user.id.get)).flashing("success" -> "admin.user.add.success")
       }
     )

@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import anorm.{NotAssigned,Pk}
 import controllers._
+import emp.event._
 import emp.util.Search._
 import emp.util.Stats
 import emp.JsonFormats._
@@ -17,7 +18,7 @@ import play.api.libs.json.Reads._
 import play.api.mvc._
 import scala.math.abs
 
-class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Ticket @Inject() (val messagesApi: MessagesApi, val eventBus: EmperorEventBus) extends Controller with I18nSupport with Secured {
 
   val emptyObj = __.json.put(Json.obj())
 
@@ -139,6 +140,12 @@ class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I1
             ticketId = ticket.id.get, ctype = "comment", userId = request.user.id.get,
             content = (jsObj \ "content").as[String]
           ).map({ comm =>
+            eventBus.publish(
+              CommentTicketEvent(
+                ticketId = ticket.id.get,
+                commentId = comm.id.get
+              )
+            )
             Stats.addEvent("ticketsCommented", Map("ticketId" -> ticketId))
             Ok(Json.toJson(comm))
           }).getOrElse(BadRequest(Json.obj("status" -> "KO", "message" -> "api.operation.failed")))
@@ -269,7 +276,7 @@ class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I1
         val typeId = (json \ "linkTypeId").as[Long]
         val childId = (jsObj \ "childTicketId").as[String]
 
-        val maybeLink: Either[String,Option[Long]] = if(childId == ticketId) {
+        val maybeLink: Either[String,Option[models.Link]] = if(childId == ticketId) {
           Left("Can't link ticket to itself.")
         } else {
 
@@ -277,9 +284,19 @@ class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I1
           val child = TicketModel.getByStringId(childId)
 
           if(parent.isDefined && child.isDefined) {
-            Right(TicketModel.link(
+            val link = TicketModel.link(
               linkTypeId = typeId, parentId = parent.get.id.get, childId = child.get.id.get
-            ))
+            )
+            link.map({ l =>
+              eventBus.publish(
+                UnlinkTicketEvent(
+                  parentId = l.parentId,
+                  childId = l.childId
+                )
+              )
+            })
+            Right(link)
+
           } else {
             Left("Unknown ticket id.")
           }
@@ -289,6 +306,13 @@ class Ticket @Inject() (val messagesApi: MessagesApi) extends Controller with I1
           case Left(message) => BadRequest(Json.obj("status" -> "KO", "message" -> message))
           case Right(link) => link match {
             case Some(l) => {
+              eventBus.publish(
+                LinkTicketEvent(
+                  groupId = l.linkGroup,
+                  parentId = l.parentId,
+                  childId = l.childId
+                )
+              )
               Stats.addEvent("ticketsLinksCreated", Map("ticketId" -> ticketId))
               Ok(Json.toJson(l))
             }

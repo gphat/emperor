@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import anorm._
 import emp.JsonFormats._
+import emp.event._
 import emp.util.Search._
 import emp.util.Stats
 import models._
@@ -15,7 +16,7 @@ import play.api.i18n.{I18nSupport,Messages,MessagesApi}
 import play.api.mvc._
 import play.api.libs.json.Json
 
-class Project @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport with Secured {
+class Project @Inject() (val messagesApi: MessagesApi, val eventBus: EmperorEventBus) extends Controller with I18nSupport with Secured {
 
   val addProjectForm = Form(
     mapping(
@@ -61,8 +62,13 @@ class Project @Inject() (val messagesApi: MessagesApi) extends Controller with I
       },
       value => {
         ProjectModel.create(project = value).map({ project =>
-
-          Redirect(routes.Project.item(project.id.get)).flashing("success" -> "project.add.success")
+          val id = project.id.get
+          eventBus.publish(
+            NewProjectEvent(
+              projectId = id
+            )
+          )
+          Redirect(routes.Project.item(id)).flashing("success" -> "project.add.success")
         }).getOrElse(
           Redirect(routes.Project.index()).flashing("error" -> "project.add.failure")
         )
@@ -140,6 +146,11 @@ class Project @Inject() (val messagesApi: MessagesApi) extends Controller with I
       },
       value => {
         ProjectModel.update(projectId, value)
+        eventBus.publish(
+          ChangeProjectEvent(
+            projectId = projectId
+          )
+        )
         Redirect(routes.Project.item(projectId)).flashing("success" -> "project.edit.success")
       }
     )

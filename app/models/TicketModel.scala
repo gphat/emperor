@@ -412,16 +412,7 @@ object TicketModel {
             'content    -> content
           ).executeInsert()
 
-          val comm = getCommentById(id.get)
-          comm.map { c =>
-            EmperorEventBus.publish(
-              CommentTicketEvent(
-                ticketId = ticketId,
-                commentId = c.id.get
-              )
-            )
-          }
-          comm
+          getCommentById(id.get)
         }
       }
       case None => return None
@@ -529,12 +520,6 @@ object TicketModel {
           DB.withConnection { implicit conn =>
 
             getFullById(tid.get).map({ t =>
-              // Get on the bus!
-              EmperorEventBus.publish(
-                NewTicketEvent(
-                  ticketId = t.id.get
-                )
-              )
               Right(t)
             }).getOrElse(Left("ticket.error.create.database"))
           }
@@ -737,7 +722,7 @@ object TicketModel {
   /**
    * Link a child ticket to a parent with a type.
    */
-  def link(linkTypeId: Long, parentId: Long, childId: Long): Option[Long] = {
+  def link(linkTypeId: Long, parentId: Long, childId: Long): Option[models.Link] = {
 
     DB.withTransaction { implicit conn =>
       TicketLinkTypeModel.getById(linkTypeId).map({ lt =>
@@ -759,16 +744,9 @@ object TicketModel {
             'link_group       -> lg
           ).executeInsert()
         })
-        li.map({ lid =>
-          EmperorEventBus.publish(
-            LinkTicketEvent(
-              groupId = lg,
-              parentId = parentId,
-              childId = childId
-            )
-          )
-          Some(lid)
-        }).getOrElse(None)
+        li.flatMap({ lid =>
+          getLinkById(lid)
+        })
       }).getOrElse(None)
     }
   }
@@ -781,12 +759,6 @@ object TicketModel {
       val link = getFullLinkById(id)
       link.map({ l =>
         deleteLinkQuery.on('link_group -> l.linkGroup).execute()
-        EmperorEventBus.publish(
-          UnlinkTicketEvent(
-            parentId = l.parentId,
-            childId = l.childId
-          )
-        )
       })
     }
   }
@@ -892,17 +864,6 @@ object TicketModel {
 
       val newTicket = DB.withConnection { implicit conn =>
         getFullById(id).get
-      }
-
-      if(changed) {
-        // Get on the bus!
-        EmperorEventBus.publish(
-          ChangeTicketEvent(
-            ticketId = id,
-            oldDataId = oldTicket.dataId,
-            newDataId = newTicket.dataId
-          )
-        )
       }
       newTicket
     } else {

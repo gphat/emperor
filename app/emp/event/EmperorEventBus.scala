@@ -5,6 +5,7 @@ import akka.event.LookupClassification
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.actor.Actor
+import javax.inject._
 import models._
 
 /**
@@ -106,7 +107,8 @@ case class UnlinkTicketEvent(
  * $ - user/forgotpassword
  * $ - user/loggedin
  */
-object EmperorEventBus extends ActorEventBus with LookupClassification{
+@Singleton
+class EmperorEventBus extends ActorEventBus with LookupClassification {
   type Event=EmperorEvent
   type Classifier=String
 

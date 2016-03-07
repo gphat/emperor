@@ -93,14 +93,6 @@ object UserModel {
         'admin      -> user.admin
       ).executeInsert()
 
-      id.map { uid =>
-        EmperorEventBus.publish(
-          NewUserEvent(
-            userId = uid
-          )
-        )
-      }
-
       this.getById(id.get).get
     }
   }
@@ -124,12 +116,6 @@ object UserModel {
         'id -> id
       ).execute
     }
-    // Put it on the bus!
-    EmperorEventBus.publish(
-      ForgotPasswordEvent(
-        userId = id
-      )
-    )
 
     token
   }

@@ -13,7 +13,7 @@ import play.api.mvc._
 import models._
 import org.mindrot.jbcrypt.BCrypt
 
-class Auth @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class Auth @Inject() (val messagesApi: MessagesApi, val eventBus: EmperorEventBus) extends Controller with I18nSupport {
 
   val loginForm = Form(
     mapping(
@@ -80,7 +80,7 @@ class Auth @Inject() (val messagesApi: MessagesApi) extends Controller with I18n
         case loginUser => {
 
           val user = UserModel.getByUsername(loginUser.username).get // We know this exists, so just get it
-          EmperorEventBus.publish(
+          eventBus.publish(
             LogInUserEvent(
               userId = user.id.get
             )
@@ -101,6 +101,12 @@ class Auth @Inject() (val messagesApi: MessagesApi) extends Controller with I18n
           UserModel.getByUsername(forgotUser.username).map({ user =>
             val token = UserModel.generateForgotPassword(user.id.get)
             Stats.addEvent("passwordsReset", Map("userId" -> user.id.get.toString))
+            // Put it on the bus!
+            eventBus.publish(
+              ForgotPasswordEvent(
+                userId = user.id.get
+              )
+            )
             Redirect(routes.Auth.login()).flashing("success" -> "auth.forgot.success")
           }).getOrElse(NotFound(views.html.auth.forgot(forgotForm)))
         }
