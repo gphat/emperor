@@ -11,7 +11,7 @@ import play.api.Play.current
 /**
  * Class for types of links.
  */
-case class TicketLinkType(id: Pk[Long] = NotAssigned, name: String, inverse: Option[Long], dateCreated: DateTime)
+case class TicketLinkType(id: Pk[Long] = NotAssigned, name: String, invertable: Boolean, dateCreated: DateTime)
 
 object TicketLinkTypeModel {
 
@@ -27,9 +27,9 @@ object TicketLinkTypeModel {
   val ticket_link_type = {
     get[Pk[Long]]("id") ~
     get[String]("name") ~
-    get[Option[Long]]("inverse") ~
+    get[Boolean]("invertable") ~
     get[DateTime]("date_created") map {
-      case id~name~inverse~dateCreated => TicketLinkType(id, name, inverse, dateCreated)
+      case id~name~invertable~dateCreated => TicketLinkType(id, name, invertable, dateCreated)
     }
   }
 

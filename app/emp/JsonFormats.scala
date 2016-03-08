@@ -463,7 +463,7 @@ object JsonFormats {
     def reads(json: JsValue): JsResult[TicketLinkType] = JsSuccess(TicketLinkType(
       id          = Id((json \ "id").as[Long]),
       name        = (json \ "name").as[String],
-      inverse     = (json \ "inverse").asOpt[Long],
+      invertable  = (json \ "inverstable").as[Boolean],
       dateCreated = (json \ "dateCreated").asOpt[String].map({ d => dateFormatterUTC.parseDateTime(d) }).getOrElse(new DateTime())
     ))
 
@@ -473,7 +473,7 @@ object JsonFormats {
         "id"            -> JsNumber(obj.id.get),
         "name"          -> JsString(obj.name),
         "nameI18N"      -> JsString(Messages(obj.name)),
-        "inverse"       -> optionLongtoJsValue(obj.inverse),
+        "invertable"    -> JsBoolean(obj.invertable),
         "dateCreated"   -> JsString(dateFormatter.print(obj.dateCreated))
       )
       toJson(doc)

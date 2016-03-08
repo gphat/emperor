@@ -736,14 +736,15 @@ object TicketModel {
           'link_group       -> lg
         ).executeInsert()
 
-        lt.inverse.map({ invId =>
-          insertLinkQuery.on(
-            'link_type_id     -> invId,
-            'parent_ticket_id -> childId,
-            'child_ticket_id  -> parentId,
-            'link_group       -> lg
-          ).executeInsert()
-        })
+        // TODO
+        // lt.inverse.map({ invId =>
+        //   insertLinkQuery.on(
+        //     'link_type_id     -> invId,
+        //     'parent_ticket_id -> childId,
+        //     'child_ticket_id  -> parentId,
+        //     'link_group       -> lg
+        //   ).executeInsert()
+        // })
         li.flatMap({ lid =>
           getLinkById(lid)
         })
@@ -805,11 +806,15 @@ object TicketModel {
     // the resolution.  But if we DON'T get one (None) then we could either
     // be leaving the resolution alone OR setting it to None.  To disambiguate
     // we use the clearResolution boolean.  If that is true then we will
-    // set newResId to None (regladless of what resolutionId we might've gotten).
+    // set newResId to None (regardless of what resolutionId we might've gotten).
     val oldResId: Option[Long] = oldTicket.resolution.id
     val newResId: Option[Long] = clearResolution match {
       case true   => None
-      case false  => Some(resolutionId.getOrElse(oldResId.get))
+      case false  => if(resolutionId.isDefined) {
+        resolutionId
+      } else {
+        oldResId
+      }
     }
 
     val changed = if(oldTicket.priority.id != ticket.priorityId) {

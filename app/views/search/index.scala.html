@@ -50,13 +50,13 @@
     <tr>
      <td colspan="7">
       <span data-bind="i18nText: [ 'pager_summary', { 'start': pager().first(), 'finish': pager().last(), 'total': pager().total() } ]"></span>
-      <div class="pagination pull-right">
-        <ul>
-          <li data-bind="click: function(data) { changePage(pager().prev()) }, css: { disabled: pager().noPrev }"><a><i class="icon-double-angle-left"></i></a></li>
+      <div class="pull-right">
+        <ul class="pagination">
+          <li data-bind="click: function(data) { changePage(pager().prev()) }, css: { disabled: pager().noPrev }"><a><i class="fa fa-angle-double-left"></i></a></li>
           <!-- ko foreach: pager().window -->
           <li data-bind="css: { active: $data == pager().page() }"><a data-bind="click: changePage, text: $data"></a></li>
           <!-- /ko -->
-          <li data-bind="click: function(data) { changePage(pager().next()) }, css: { disabled: pager().noNext }"><a><i class="icon-double-angle-right"></i></a></li>
+          <li data-bind="click: function(data) { changePage(pager().next()) }, css: { disabled: pager().noNext }"><a><i class="fa fa-angle-double-right"></i></a></li>
         </ul>
       </div>
      </td>

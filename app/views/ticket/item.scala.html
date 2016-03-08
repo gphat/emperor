@@ -31,7 +31,7 @@
    <div class="drawer" data-bind="template: { name: 'action-' + action() + '-template', if: action() }, visible: action()"></div>
    <div class="description" data-bind="html: ticket().description"></div>
    <div class="card-info">
-    <ul>
+    <ul class="list-unstyled">
      <li>
       @Messages("ticket.assignee")
       <span data-bind="visible: ticket().assigneeId"><a class="action btn btn-small" data-bind="click: function(data) { action('assign') }"><i class="fa fa-edit"></i> <span data-bind="text: ticket().assigneeName"></span></a></span>
