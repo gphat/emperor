@@ -31,33 +31,33 @@ object Search {
   )
 
   /**
-   * A facet of a search.
+   * An aggregation of a search.
    */
-  case class Facet(value: String, count: Long)
+  case class Aggregation(value: String, count: Long)
 
   /**
-   * A collection of facets.
+   * A collection of aggregations.
    */
-  case class Facets(name: String, items: Seq[Facet])
+  case class Aggregations(name: String, items: Seq[Aggregation])
 
   /**
    * A search result.
    */
-  case class SearchResult[A](pager: Page[A], facets: Seq[Facets])
+  case class SearchResult[A](pager: Page[A], aggregations: Seq[Aggregations])
 
   /**
-   * Contains logic for converting ES' crazy Facet classes into something sane.
+   * Contains logic for converting ES' crazy aggregation classes into something sane.
    */
   def parseSearchResponse[A](pager: Page[A], response: JsValue): SearchResult[A] = {
 
     // Logger.debug("Response:")
     // Logger.debug(Json.prettyPrint(response))
-    val facetObj = (response \ "facets").as[JsObject]
+    val aggObj = (response \ "aggregations").as[JsObject]
     // Don't bother digging into the facets if there's only one of them
-    val facets = if(facetObj.fields.length > 1) {
-      facetObj.fields.map({ case (facName, facValue) =>
-        // zip together the list of terms and their counts so we can make a facet
-        val terms = (facValue \ "terms" \\ "term").zip(facValue \ "terms" \\ "count").map({ case (term, termCount) =>
+    val aggregations = if(aggObj.fields.length > 1) {
+      aggObj.fields.map({ case (aggName, aggValue) =>
+        // zip together the list of terms and their counts so we can make an aggregation
+        val terms = (aggValue \ "terms" \\ "term").zip(aggValue \ "terms" \\ "count").map({ case (term, termCount) =>
           // It's possible to get a number back, since the user ID is a number. We'll just convert it
           // back to a string.
           val t = try {
@@ -65,13 +65,13 @@ object Search {
           } catch {
             case e: Exception => term.as[Int].toString
           }
-          Facet(value = t, count = termCount.as[Int])
+          Aggregation(value = t, count = termCount.as[Int])
         })
-        Facets(name = facName, items = terms)
+        Aggregations(name = aggName, items = terms)
       }) filter { f => f.items.size > 1 } // Eliminate facets with only one item
     } else { Seq() }
 
-    SearchResult(pager = pager, facets = facets)
+    SearchResult(pager = pager, aggregations = aggregations)
   }
 
   /**
@@ -85,7 +85,7 @@ object Search {
    */
   def runQuery(
     client: Client, index: String, query: SearchQuery, filterMap: Map[String,String],
-    sortMap: Map[String,String], facets: Map[String,String] = Map.empty
+    sortMap: Map[String,String], aggregations: Map[String,String] = Map.empty
   ): Future[Response] = {
 
     val termFilters: Seq[JsObject] = query.filters.flatMap({ kv =>
@@ -141,8 +141,8 @@ object Search {
       case _ => (query.page - 1) * query.count
     }
 
-    // Make a map of facets
-    val finalFacets = facets.foldLeft(Json.obj())((acc, f) => {
+    // Make a map of aggregations
+    val finalAggs = aggregations.foldLeft(Json.obj())((acc, f) => {
       acc ++ Json.obj(
         f._1 -> Json.obj(
           "terms" -> Json.obj("field" -> f._2)
@@ -157,7 +157,7 @@ object Search {
       "sort" -> Json.arr(
         Json.obj(sortMap.get(query.sortBy.getOrElse("dateCreated")).getOrElse("dateCreated") -> Json.obj("order" -> sortOrder))
       ),
-      "facets" -> finalFacets
+      "aggregations" -> finalAggs
     )
 
     // Logger.debug("Running ES query against index " + index + ":")

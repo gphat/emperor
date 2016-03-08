@@ -293,15 +293,15 @@ object SearchModel {
   """
 
   // Facets
-  val ticketCommentFacets = Map(
+  val ticketCommentAggs = Map(
     "user_id" -> "userId"
   )
-  val eventFacets = Map(
+  val eventAggs = Map(
     "project" -> "projectName",
     "user" -> "userId",
     "etype" -> "etype"
   )
-  val ticketFacets = Map(
+  val ticketAggs = Map(
     "resolution" -> "resolutionName",
     "type" -> "typeName",
     "project" -> "projectName",
@@ -686,7 +686,7 @@ object SearchModel {
     val res = Search.runQuery(
       client = esClient, index = ticketCommentIndex + "-read", query = query,
       filterMap = ticketCommentFilterMap, sortMap = ticketCommentSortMap,
-      facets = ticketCommentFacets
+      aggregations = ticketCommentAggs
     )
     Try({ Await.result(res, Duration(1, "seconds")).getResponseBody }).map({ response =>
 
@@ -703,7 +703,7 @@ object SearchModel {
         count = query.count,
         total = 0
       ),
-      facets = Seq())
+      aggregations = Seq())
     )
   }
 
@@ -712,7 +712,7 @@ object SearchModel {
    */
   def searchEvent(query: SearchQuery): SearchResult[Event] = {
 
-    val res = Search.runQuery(esClient, eventIndex + "-read", query, eventFilterMap, eventSortMap, eventFacets)
+    val res = Search.runQuery(esClient, eventIndex + "-read", query, eventFilterMap, eventSortMap, eventAggs)
     Try({ Await.result(res, Duration(1, "seconds")).getResponseBody }).map({ response =>
 
       val jres = Json.parse(response)
@@ -728,7 +728,7 @@ object SearchModel {
         count = query.count,
         total = 0
       ),
-      facets = Seq())
+      aggregations = Seq())
     )
   }
 
@@ -737,7 +737,7 @@ object SearchModel {
    */
   def searchTickets(query: SearchQuery): SearchResult[FullTicket] = {
 
-    val res = runQuery(esClient, ticketIndex + "-read", query, ticketFilterMap, ticketSortMap, ticketFacets)
+    val res = runQuery(esClient, ticketIndex + "-read", query, ticketFilterMap, ticketSortMap, ticketAggs)
 
     val attempt = Try({ Await.result(res, Duration(1, "seconds")).getResponseBody }).map({ response =>
       val jres = Json.parse(response)
@@ -757,7 +757,7 @@ object SearchModel {
             count = query.count,
             total = 0
           ),
-          facets = Seq()
+          aggregations = Seq()
         )
       }
       case Success(s) => s

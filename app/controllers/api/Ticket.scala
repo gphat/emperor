@@ -112,7 +112,7 @@ class Ticket @Inject() (val messagesApi: MessagesApi, val eventBus: EmperorEvent
           "prev"  -> results.pager.prev,
           "offset"-> results.pager.offset
         ),
-        "facets" -> results.facets.map(fs => Json.obj(
+        "aggregations" -> results.aggregations.map(fs => Json.obj(
           "name" -> fs.name,
           "nameI18N" -> Messages(fs.name),
           "items" -> fs.items.map(f => Json.obj(

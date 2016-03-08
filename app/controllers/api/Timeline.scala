@@ -38,7 +38,7 @@ class Timeline @Inject() (val messagesApi: MessagesApi) extends Controller with 
         "prev"  -> results.pager.prev,
         "offset"-> results.pager.offset
       ),
-      "facets" -> results.facets.map(fs => Json.obj(
+      "aggregations" -> results.aggregations.map(fs => Json.obj(
         "name" -> fs.name,
         "nameI18N" -> Messages("search.facet." + fs.name),
         "items" -> fs.items.map(f => {
