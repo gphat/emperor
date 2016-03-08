@@ -105,11 +105,10 @@ object Search {
         // Use a combination of a text and query string parser to get everything!
         "bool" -> Json.obj(
           "should" -> Json.arr(
-            Json.obj("text" -> Json.obj(
-              "_all" -> Json.obj(
-                "query" -> q,
-                "type" -> "phrase_prefix"
-              )
+            Json.obj("multi_match" -> Json.obj(
+              "query" -> q,
+              "type" -> "phrase_prefix",
+              "fields" -> "_all"
             )),
             Json.obj("queryString" -> Json.obj("query" -> q))
           )

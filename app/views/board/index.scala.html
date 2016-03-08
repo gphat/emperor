@@ -52,7 +52,7 @@
     <div class="column">
      <h5>@Messages(status.name)</h5>
      <ul data-status-id="@status.id" data-status-name-i18n="@Messages(status.name)" data-bind="event: { dragenter: highlight, dragover: dragOver, dragleave: unhighlight, drop: drop }, foreach: columns['@{status.name}']">
-      <li draggable="true" data-bind="attr: { id: ticketId }, event: { dragstart: dragStart, dragend: dragEnd }"><span class="label" data-bind="style: { 'backgroundColor': '#' + typeColor() }, text: typeNameI18N"></span><a data-bind="text: ticketId, attr: { href: url }"></a>: <span data-bind="html: summary"></span></li>
+      <li draggable="true" data-bind="attr: { id: ticketId }, event: { dragstart: dragStart, dragend: dragEnd }"><span class="label label-default" data-bind="style: { 'backgroundColor': '#' + typeColor() }, text: typeNameI18N"></span><a data-bind="text: ticketId, attr: { href: url }"></a>: <span data-bind="html: summary"></span></li>
      </ul>
     </div>
    }

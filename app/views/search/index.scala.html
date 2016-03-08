@@ -39,11 +39,11 @@
    <tbody data-bind="foreach: pager().items">
     <tr data-bind="css: { resolved: resolutionId }">
      <td style="width: 10%"><a data-bind="attr: { href: url }, text: ticketId"></a></td>
-     <td><span class="label" data-bind="style: { 'backgroundColor': '#' + typeColor() }, text: typeNameI18N"></span></td>
-     <td><span class="label" data-bind="text: statusNameI18N, visible: !resolutionId()"></span></td>
+     <td><span class="label label-default" data-bind="style: { 'backgroundColor': '#' + typeColor() }, text: typeNameI18N"></span></td>
+     <td><span class="label label-default" data-bind="text: statusNameI18N, visible: !resolutionId()"></span></td>
      <td style="width: 80%"><a data-bind="attr: { href: url }, html: summary"></a></td>
-     <td><span class="label" data-bind="style: { 'backgroundColor': '#' + priorityColor() }, text: priorityNameI18N"></span></td>
-     <td><span class="label" data-bind="style: { 'backgroundColor': '#' + severityColor() }, text: severityNameI18N"></span></td>
+     <td><span class="label label-default" data-bind="style: { 'backgroundColor': '#' + priorityColor() }, text: priorityNameI18N"></span></td>
+     <td><span class="label label-default" data-bind="style: { 'backgroundColor': '#' + severityColor() }, text: severityNameI18N"></span></td>
     </tr>
    </tbody>
    <tfoot>

@@ -95,7 +95,7 @@ class Ticket @Inject() (val messagesApi: MessagesApi, val eventBus: EmperorEvent
       val q = SearchQuery(
         query = "*",
         page = 1,
-        count = 99999, filters = commFilters,
+        count = 100, filters = commFilters,
         sortBy = Some("dateCreated"), sortOrder = Some("asc")
       )
       val results = SearchModel.searchComment(q)
